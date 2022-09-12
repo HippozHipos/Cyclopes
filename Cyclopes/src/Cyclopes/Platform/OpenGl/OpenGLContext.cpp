@@ -7,7 +7,8 @@
 #include "Cyclopes/Core/Log.h"
 
 namespace cyc {
-	OpenGLContext::OpenGLContext()
+
+	void OpenGLContext::OnInit()
 	{
 		m_Pfd =
 		{
@@ -28,12 +29,6 @@ namespace cyc {
 			0,
 			0, 0, 0
 		};
-	}
-
-
-	void OpenGLContext::OnInit()
-	{
-
 	}
 
 	void OpenGLContext::MakeCurrent(const std::string& nameId)
@@ -77,12 +72,13 @@ namespace cyc {
 			std::pair<std::string, GLRCWinInfo>(
 				window->GetNameId(), 
 				{ wglCreateContext(dc), window }
-				));
+		));
 
 		//users have to ability to call Renderer::MakeCurrent. This is just here so that glLoadGlad can 
 		//be called.
 		if (m_FirstWindow)
 		{
+			m_FirstWindow = false;
 			MakeCurrent(window->GetNameId());
 			if (!gladLoadGL())
 			{

@@ -17,13 +17,13 @@ namespace cyc {
 		};
 
 	public:
-		OpenGLContext();
+		OpenGLContext() = default;
+		~OpenGLContext() = default;
 
 	public:
 		void OnInit() override;
 		void MakeCurrent(const std::string& nameId) override;
 		void SwapBuffers(const std::string& nameId) override;
-
 		void PushWindow(Window* window) override;
 
 	private:
