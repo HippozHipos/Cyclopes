@@ -1,0 +1,68 @@
+#pragma once
+
+#include "Base.h"
+
+#include "Cyclopes/Event/Mouse.h"
+#include "Cyclopes/Event/Keyboard.h"
+#include "Cyclopes/Event/WindowEvent.h"
+
+#include "Cyclopes/Core/LayerStack.h"
+
+#include <memory>
+#include <bitset>
+
+namespace cyc {
+
+	class WindowProperties
+	{
+	public:
+		int x = 0;
+		int y = 0;
+		int width = 0;
+		int height = 0;
+		std::string title = "";
+	};
+
+	class Window
+	{
+	public:
+		Window() = default;
+		virtual ~Window() = default;
+
+	public:
+		virtual void SetVSync(bool enable) = 0;
+		virtual bool VSyncIsEnabled() const = 0;
+		virtual bool IsFocused() const = 0;
+		virtual void Focus() = 0;
+		virtual const Mouse& GetMouse() const = 0;
+		virtual const Keyboard& GetKeyboard() const = 0;
+		virtual void Destroy() = 0;
+		virtual void SetTitle(const std::string& title) = 0;
+		virtual bool HasEvent() const = 0;
+		virtual WindowEvent ReadEvent() const = 0;
+		virtual LayerStack& GetLayerStack() = 0;
+		virtual const std::string& GetNameId() const = 0;
+
+	public:
+		//native window refers to the underlying os-specific window.
+		//For windows, it is HWND. 
+		//REMEMBER: UPDATE COMMENT AS OTHER PLATFORMS ARE ADDED
+		virtual void* GetNativeWindow() = 0; 
+
+	public:
+		static Scoped<Window> 
+		Create(const std::string& nameId, 
+			const WindowProperties& props = {100, 100, 600, 500, "Cyclopes Window"});
+		void SetIsRegistered(); //set is the window is registered to application
+		bool IsRegisreted() const;
+
+	protected:
+		bool m_VSyncEnabled = false;
+
+	private:
+		bool m_IsResgistered = false;
+	};
+
+	bool HasWindow();
+}
+
