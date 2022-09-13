@@ -5,7 +5,7 @@
 
 namespace cyc {
 
-	Scoped<GraphicsContext> GraphicsContext::Create()
+	Cyc_Scoped<GraphicsContext> GraphicsContext::Create()
 	{
 		return std::make_unique<OpenGLContext>();
 	}

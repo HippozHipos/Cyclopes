@@ -28,7 +28,7 @@ namespace cyc {
 
 	private:
 		PIXELFORMATDESCRIPTOR m_Pfd;
-		std::unordered_map<std::string, GLRCWinInfo> m_WinNameIDGLRCWinInfoMap;
+		Cyc_UnorderedMap<Cyc_String, GLRCWinInfo> m_WinNameIDGLRCWinInfoMap;
 		bool m_FirstWindow = true;
 	};
 

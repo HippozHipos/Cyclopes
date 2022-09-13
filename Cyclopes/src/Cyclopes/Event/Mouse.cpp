@@ -136,7 +136,7 @@ namespace cyc {
 		m_EventBuffer.pop();
 		return out;
 	}
-	void Mouse::TrimBuffer(std::queue<MouseEvent>& buffer, std::uint32_t maxBufferSize)
+	void Mouse::TrimBuffer(Cyc_Queue<MouseEvent>& buffer, std::uint32_t maxBufferSize)
 	{
 		while (buffer.size() > maxBufferSize)
 			buffer.pop();

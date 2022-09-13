@@ -4,7 +4,7 @@
 
 namespace cyc {
 
-	CYC_STRING TranslateWin32ErrorCode(HRESULT hr);
+	Cyc_WString TranslateWin32ErrorCode(HRESULT hr);
 }
 
 #ifdef CYC_DEBUG
@@ -18,7 +18,7 @@ namespace cyc {
 				msg L"\n\n" +											\
 				TranslateWin32ErrorCode(errorCode) + L"\n\n"			\
 				CYC_STRINGIFY([FILE] ) __FILE__ L"\n\n"					\
-				CYC_STRINGIFY([LINE] ) + CYC_TO_STRING(__LINE__)		\
+				CYC_STRINGIFY([LINE] ) + std::to_wstring(__LINE__)		\
 			);															\
 			CYC_DEBUGBREAK();											\
 		}																\
@@ -33,7 +33,7 @@ namespace cyc {
 				msg L"\n\n" +											\
 				TranslateWin32ErrorCode(GetLastError()) + L"\n\n"		\
 				CYC_STRINGIFY([FILE] ) __FILE__ L"\n\n"					\
-				CYC_STRINGIFY([LINE] ) + CYC_TO_STRING(__LINE__)		\
+				CYC_STRINGIFY([LINE] ) + std::to_wstring(__LINE__)		\
 			);															\
 			CYC_DEBUGBREAK();											\
 		}																\

@@ -3,8 +3,8 @@
 
 namespace cyc {
 
-	Ref<spdlog::logger> Log::s_CoreLogger;
-	Ref<spdlog::logger> Log::s_ClientLogger;
+	Cyc_Ref<spdlog::logger> Log::s_CoreLogger;
+	Cyc_Ref<spdlog::logger> Log::s_ClientLogger;
 
 	void Log::Init()
 	{
@@ -36,12 +36,12 @@ namespace cyc {
 		CYC_CORE_INFO("Logger Initialized");
 	}
 
-	Ref<spdlog::logger>& Log::GetClientLogger()
+	Cyc_Ref<spdlog::logger>& Log::GetClientLogger()
 	{
 		return s_ClientLogger;
 	}
 
-	Ref<spdlog::logger>& Log::GetCoreLogger()
+	Cyc_Ref<spdlog::logger>& Log::GetCoreLogger()
 	{
 		return s_CoreLogger;
 	}

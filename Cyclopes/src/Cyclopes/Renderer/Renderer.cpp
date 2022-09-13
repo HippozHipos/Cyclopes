@@ -15,12 +15,12 @@ namespace cyc {
 		m_GfxContext->OnInit();
 	}
 
-	void Renderer::SetTargetWindow(const std::string& nameId)
+	void Renderer::SetTargetWindow(const Cyc_String& nameId)
 	{
 		m_GfxContext->MakeCurrent(nameId);
 	}
 
-	void Renderer::SwapBuffers(const std::string& nameId)
+	void Renderer::SwapBuffers(const Cyc_String& nameId)
 	{
 		m_GfxContext->SwapBuffers(nameId);
 	}

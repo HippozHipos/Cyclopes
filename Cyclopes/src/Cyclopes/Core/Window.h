@@ -20,7 +20,7 @@ namespace cyc {
 		int y = 0;
 		int width = 0;
 		int height = 0;
-		std::string title = "";
+		Cyc_String title = "";
 	};
 
 	class Window
@@ -50,10 +50,10 @@ namespace cyc {
 		virtual void* GetNativeWindow() = 0; 
 
 	public:
-		static Scoped<Window> 
+		static Cyc_Scoped<Window> 
 		Create(const std::string& nameId, 
 			const WindowProperties& props = {100, 100, 600, 500, "Cyclopes Window"});
-		void SetIsRegistered(); //set is the window is registered to application
+		void SetIsRegistered(); 
 		bool IsRegisreted() const;
 
 	protected:

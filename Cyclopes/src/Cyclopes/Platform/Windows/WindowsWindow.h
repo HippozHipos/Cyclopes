@@ -40,7 +40,7 @@ namespace cyc {
 		LRESULT HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	public:
-		void ErrorMessageBox(CYC_STRING error);
+		void ErrorMessageBox(Cyc_WString error);
 
 	public:
 		const Mouse& GetMouse() const;
@@ -72,7 +72,7 @@ namespace cyc {
 	private:
 		LayerStack& layers;
 		static int s_WindowCount;
-		CYC_STRING m_ClassName = L"Cyclopes Window";
+		Cyc_WString m_ClassName = L"Cyclopes Window";
 		static bool s_HInstanceIsSet;
 		static HINSTANCE s_HInstance; 
 		HWND m_HWnd = nullptr;
@@ -114,9 +114,9 @@ namespace cyc {
 		void Init();
 
 	private:
-		std::string m_NameId = "";
+		Cyc_String m_NameId = "";
 		WindowProperties m_Properties;
-		Scoped<Win32NativeWindow> m_Window;
+		Cyc_Scoped<Win32NativeWindow> m_Window;
 		LayerStack m_Layers;
 	};
 }

@@ -12,12 +12,12 @@ namespace cyc {
 	{
 	public:
 		static void Init();
-		static Ref<spdlog::logger>& GetClientLogger();
-		static Ref<spdlog::logger>& GetCoreLogger();
+		static Cyc_Ref<spdlog::logger>& GetClientLogger();
+		static Cyc_Ref<spdlog::logger>& GetCoreLogger();
 		
 	private:
-		static Ref<spdlog::logger> s_CoreLogger;
-		static Ref<spdlog::logger> s_ClientLogger;
+		static Cyc_Ref<spdlog::logger> s_CoreLogger;
+		static Cyc_Ref<spdlog::logger> s_ClientLogger;
 	};
 }
 

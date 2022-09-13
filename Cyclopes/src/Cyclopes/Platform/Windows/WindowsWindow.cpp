@@ -63,7 +63,7 @@ namespace cyc {
 	{
 		s_HInstance = GetModuleHandle(NULL);
 		s_WindowCount++;
-		m_ClassName += CYC_TO_STRING(s_WindowCount);
+		m_ClassName += std::to_wstring(s_WindowCount);
 	}
 
 	Win32NativeWindow::~Win32NativeWindow() 
@@ -304,7 +304,7 @@ namespace cyc {
 		UnregisterClass(m_ClassName.c_str(), s_HInstance);
 	}
 
-	void Win32NativeWindow::ErrorMessageBox(CYC_STRING error)
+	void Win32NativeWindow::ErrorMessageBox(Cyc_WString error)
 	{
 		MessageBox(m_HWnd, error.c_str(),
 			L"Cyclopes Win32 Error", MB_OK | MB_ICONERROR);

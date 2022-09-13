@@ -46,10 +46,10 @@ namespace cyc {
 		void OnClientDestroy();
 
 	protected:
-		Scoped<Renderer> m_Renderer;
+		Cyc_Scoped<Renderer> m_Renderer;
 
 	private:
-		std::vector<Window*> m_Windows;
+		Cyc_Vector<Window*> m_Windows;
 	};
 
 	Application* CreateApplication();

@@ -59,8 +59,8 @@ namespace cyc {
 		static constexpr std::uint32_t s_MaxBufferSize = 32u;
 		static constexpr std::uint32_t s_NKeyStates = 256;
 		mutable std::bitset<s_NKeyStates> m_KeyStates;
-		mutable std::queue<KeyEvent> m_EventBuffer;
-		mutable std::queue<char> m_CharBuffer;
+		mutable Cyc_Queue<KeyEvent> m_EventBuffer;
+		mutable Cyc_Queue<char> m_CharBuffer;
 	};
 
 }

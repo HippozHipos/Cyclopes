@@ -105,7 +105,7 @@ namespace cyc {
 		}
 	}
 
-	void LayerStack::AssertWindowRegistered(const Layer* layer, const std::string& funcName) const
+	void LayerStack::AssertWindowRegistered(const Layer* layer, const Cyc_String& funcName) const
 	{
 		CYC_CORE_ASSERT(m_Window->IsRegisreted(),
 			funcName +

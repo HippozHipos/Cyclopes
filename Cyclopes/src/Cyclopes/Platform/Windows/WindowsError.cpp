@@ -3,7 +3,7 @@
 
 namespace cyc {
 
-	CYC_STRING TranslateWin32ErrorCode(HRESULT hr)
+	Cyc_WString TranslateWin32ErrorCode(HRESULT hr)
 	{
 		wchar_t* msgBuffer = nullptr;
 		DWORD nMsgLen = FormatMessage(
@@ -20,7 +20,7 @@ namespace cyc {
 			return L"Undefined Error Code";
 		}
 
-		CYC_STRING error = msgBuffer;
+		Cyc_WString error = msgBuffer;
 		LocalFree(msgBuffer);
 		return error;
 	}

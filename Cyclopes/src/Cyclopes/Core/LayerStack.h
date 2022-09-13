@@ -53,7 +53,7 @@ namespace cyc {
 		void PushBackLayer(Layer* layer, bool overlay = false);
 
 	private:
-		void AssertWindowRegistered(const Layer* layer, const std::string& funcName) const;
+		void AssertWindowRegistered(const Layer* layer, const Cyc_String& funcName) const;
 
 	private:
 		//window size 
@@ -63,7 +63,7 @@ namespace cyc {
 		void OnDetach();
 
 	private:
-		std::vector<Layer*> m_Layers;
+		Cyc_Vector<Layer*> m_Layers;
 		Window* m_Window = nullptr;
 		int m_NOverlays = 0; //number of overlay layers
 		int m_NNonOverlays = 0; //number of non-overlay layers

@@ -3,12 +3,12 @@
 
 namespace cyc {
 
-	Layer::Layer(const std::string& name):
+	Layer::Layer(const Cyc_String& name):
 		m_Name(name)
 	{
 	}
 
-	const std::string& Layer::GetName() const
+	const Cyc_String& Layer::GetName() const
 	{
 		return m_Name;
 	}

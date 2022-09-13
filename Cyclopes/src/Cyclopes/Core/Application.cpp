@@ -9,7 +9,7 @@
 namespace cyc {
     Application::Application()
     {
-        m_Renderer = std::make_unique<Renderer>();
+        m_Renderer = Cyc_MakeScoped<Renderer>();
     }
 
     void Application::RegisterWindow(Window* win)

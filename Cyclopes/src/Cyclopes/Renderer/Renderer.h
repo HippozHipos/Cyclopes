@@ -14,16 +14,16 @@ namespace cyc {
 
 	public:
 		void OnInit();
-		void SetTargetWindow(const std::string& nameId);
+		void SetTargetWindow(const Cyc_String& nameId);
 		static RenderCommands command;
-		void SwapBuffers(const std::string& nameId);
+		void SwapBuffers(const Cyc_String& nameId);
 
 		void PushWindow(Window* window);
 
 	private:
 		Window* m_TargetWindow = nullptr;
-		Scoped<GraphicsContext> m_GfxContext = nullptr;
-		std::vector<Window*> m_Windows;
+		Cyc_Scoped<GraphicsContext> m_GfxContext = nullptr;
+		Cyc_Vector<Window*> m_Windows;
 	};
 
 }

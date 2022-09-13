@@ -50,11 +50,11 @@ namespace cyc {
 		MouseEvent ReadEvent() const;
 
 	private:
-		void TrimBuffer(std::queue<MouseEvent>& buffer, std::uint32_t maxBufferSize);
+		void TrimBuffer(Cyc_Queue<MouseEvent>& buffer, std::uint32_t maxBufferSize);
 
 	private:
 		static constexpr std::uint32_t s_MaxBufferSize = 32u;
-		mutable std::queue<MouseEvent> m_EventBuffer;
+		mutable Cyc_Queue<MouseEvent> m_EventBuffer;
 
 	private:
 		bool m_InWindow = false;

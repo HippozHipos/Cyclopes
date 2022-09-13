@@ -8,10 +8,10 @@
 
 namespace cyc {
 
-	Scoped<Window> Window::Create(const std::string& nameId, const WindowProperties& props)
+	Cyc_Scoped<Window> Window::Create(const Cyc_String& nameId, const WindowProperties& props)
 	{
 #ifdef CYC_PLATFORM_WINDOWS
-		return std::make_unique<WindowsWindow>(nameId, props);
+		return Cyc_MakeScoped<WindowsWindow>(nameId, props);
 #endif
 	}
 
