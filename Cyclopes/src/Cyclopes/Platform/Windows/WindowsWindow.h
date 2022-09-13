@@ -19,6 +19,8 @@
 
 //TODO: Add support for window resizing
 
+//TODO: Make window focus when any part of a window is click
+
 namespace cyc {
 
 	class WindowsWindow;
@@ -63,7 +65,7 @@ namespace cyc {
 
 	private:
 		static constexpr std::uint32_t s_MaxBufferSize = 32u;
-		mutable std::queue<WindowEvent> m_EventBuffer;
+		mutable Cyc_Queue<WindowEvent> m_EventBuffer;
 
 	private:
 		int width = 0;

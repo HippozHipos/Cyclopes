@@ -1,12 +1,13 @@
 #include "Cycpch.h"
 
 #include "WindowsWindow.h"
+#include "WindowsError.h"
 
 #include "Cyclopes/Core/Assert.h"
 
-#include "WindowsError.h"
+#include "Cyclopes/ImGui/imgui_impl_win32.h"
 
-//extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 namespace cyc {
 
@@ -38,7 +39,7 @@ namespace cyc {
 
 		//convert string to wstring
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-		std::wstring wTitle = converter.from_bytes(props.title);
+		Cyc_WString wTitle = converter.from_bytes(props.title);
 
 		m_HWnd = ::CreateWindowEx(
 			0,
@@ -103,7 +104,10 @@ namespace cyc {
 
 	LRESULT Win32NativeWindow::HandleMessage(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-		//ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
+		if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
+		{
+			return true;
+		}
 
 		switch (msg)
 		{
@@ -390,7 +394,7 @@ namespace cyc {
 	void WindowsWindow::SetTitle(const std::string& title)
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-		std::wstring wTitle = converter.from_bytes(title);
+		Cyc_WString wTitle = converter.from_bytes(title);
 		SetWindowText(m_Window->GetHandle(), wTitle.c_str());
 	}
 

@@ -44,6 +44,7 @@ namespace cyc {
 
 		HDC dc = ::GetDC((HWND)it->second.window->GetNativeWindow());
 
+		m_targetWindow = it->second.window;
 		wglMakeCurrent(dc, it->second.glRenderContext);
 	}
 
@@ -74,8 +75,6 @@ namespace cyc {
 				{ wglCreateContext(dc), window }
 		));
 
-		//users have to ability to call Renderer::MakeCurrent. This is just here so that glLoadGlad can 
-		//be called.
 		if (m_FirstWindow)
 		{
 			m_FirstWindow = false;
@@ -85,5 +84,14 @@ namespace cyc {
 				CYC_CORE_ASSERT(false, "Function gladLoadGL failed");
 			}
 		}
+	}
+
+	Window* OpenGLContext::GetTargetWindow() const
+	{
+		return m_targetWindow;
+	}
+
+	void OpenGLContext::OnDestory()
+	{
 	}
 }

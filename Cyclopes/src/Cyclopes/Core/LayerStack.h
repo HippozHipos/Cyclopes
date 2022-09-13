@@ -56,15 +56,16 @@ namespace cyc {
 		void AssertWindowRegistered(const Layer* layer, const Cyc_String& funcName) const;
 
 	private:
-		//window size 
-		void OnAttach();
+		void OnAttach(Renderer* renderer);
 		void OnEvent(Event& e);
 		void OnUpdate();
 		void OnDetach();
+		void OnImGuiRender();
 
 	private:
 		Cyc_Vector<Layer*> m_Layers;
 		Window* m_Window = nullptr;
+		Renderer* renderer = nullptr;
 		int m_NOverlays = 0; //number of overlay layers
 		int m_NNonOverlays = 0; //number of non-overlay layers
 	};

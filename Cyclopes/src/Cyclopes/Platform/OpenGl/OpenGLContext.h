@@ -25,10 +25,13 @@ namespace cyc {
 		void MakeCurrent(const std::string& nameId) override;
 		void SwapBuffers(const std::string& nameId) override;
 		void PushWindow(Window* window) override;
+		Window* GetTargetWindow() const override;
+		void OnDestory() override;
 
 	private:
-		PIXELFORMATDESCRIPTOR m_Pfd;
+		PIXELFORMATDESCRIPTOR m_Pfd{};
 		Cyc_UnorderedMap<Cyc_String, GLRCWinInfo> m_WinNameIDGLRCWinInfoMap;
+		Window* m_targetWindow = nullptr;
 		bool m_FirstWindow = true;
 	};
 

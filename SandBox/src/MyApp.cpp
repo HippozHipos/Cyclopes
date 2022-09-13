@@ -4,19 +4,43 @@
 
 #include <Cyclopes/Core/Assert.h>
 
+class MyLayer : public cyc::Layer
+{
+public:
+	MyLayer() :
+		Layer("MyLayer")
+	{
+
+	}
+
+public:
+	void OnAttach() override {}
+	void OnUpdate() override 
+	{
+		cyc::RenderCommands::Clear(0.12, 0.12, 0.125, 0);
+	}
+
+	void OnEvent(cyc::Event& e) override {}
+	void OnDetach() override {}
+
+	void OnImGuiRender() override
+	{
+		ImGui::Begin("My Test Window");
+		ImGui::Text("Im Gui");
+		ImGui::End();
+	}
+};
+
 
 class MyApp : public cyc::Application
 {
 public:
 	void OnInit() override 
 	{
-		std::string windowId = "Test Window";
-		m_Window = cyc::Window::Create(windowId);
+		m_Window = cyc::Window::Create("Test Window");
 		RegisterWindow(m_Window.get());
-
-		std::string windowId1 = "Test Window 1";
-		m_Window1 = cyc::Window::Create(windowId1);
-		RegisterWindow(m_Window1.get());
+		m_Window->GetLayerStack().PushBackLayer(&layer);
+		SetImGuiRenderWindow(m_Window.get());
 	}
 
 	void OnUpdate() override 
@@ -27,26 +51,9 @@ public:
 			if (we.GetType() == cyc::EventType::W_CLOSE)
 			{
 				m_Window->Destroy();
+
 			}
 		}
-
-		while (m_Window1->HasEvent())
-		{
-			cyc::WindowEvent we = m_Window1->ReadEvent();
-			if (we.GetType() == cyc::EventType::W_CLOSE)
-			{
-				m_Window1->Destroy();
-			}
-		}
-
-		m_Renderer->SetTargetWindow("Test Window");
-		cyc::RenderCommands::Clear(0.12, 0.12, 0.125, 0);
-
-		m_Renderer->SetTargetWindow("Test Window 1");
-		cyc::RenderCommands::Clear(0.12, 0.12, 0.125, 0);
-
-		m_Renderer->SwapBuffers("Test Window");
-		m_Renderer->SwapBuffers("Test Window 1");
 	}
 
 	void OnDestroy() override 
@@ -55,7 +62,8 @@ public:
 
 private:
 	std::unique_ptr<cyc::Window> m_Window;
-	std::unique_ptr<cyc::Window> m_Window1;
+
+	MyLayer layer;
 };
 
 cyc::Application* cyc::CreateApplication()

@@ -8,6 +8,12 @@ namespace cyc {
 	{
 	}
 
+	void Layer::OnImGuiRender()
+	{
+
+
+	}
+
 	const Cyc_String& Layer::GetName() const
 	{
 		return m_Name;
@@ -16,6 +22,11 @@ namespace cyc {
 	void Layer::SetWindow(Window* win)
 	{
 		m_Window = win;
+	}
+
+	void Layer::SetRenderer(Renderer* renderer)
+	{
+		this->renderer = renderer;
 	}
 
 }

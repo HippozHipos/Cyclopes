@@ -25,9 +25,19 @@ namespace cyc {
 		m_GfxContext->SwapBuffers(nameId);
 	}
 
+	Window* Renderer::GetTargetWindow() const
+	{
+		return m_GfxContext->GetTargetWindow();;
+	}
+
 	void Renderer::PushWindow(Window* window)
 	{
 		m_GfxContext->PushWindow(window);
+	}
+
+	void Renderer::OnDestory()
+	{
+		m_GfxContext->OnDestory();
 	}
 
 }

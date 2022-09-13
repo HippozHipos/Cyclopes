@@ -15,15 +15,15 @@ namespace cyc {
 	public:
 		void OnInit();
 		void SetTargetWindow(const Cyc_String& nameId);
-		static RenderCommands command;
 		void SwapBuffers(const Cyc_String& nameId);
+		Window* GetTargetWindow() const;
 
 		void PushWindow(Window* window);
 
+		void OnDestory();
+
 	private:
-		Window* m_TargetWindow = nullptr;
 		Cyc_Scoped<GraphicsContext> m_GfxContext = nullptr;
-		Cyc_Vector<Window*> m_Windows;
 	};
 
 }

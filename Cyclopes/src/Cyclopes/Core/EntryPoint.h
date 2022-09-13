@@ -16,13 +16,13 @@ int CALLBACK WinMain(
 {
 	cyc::Application* app = cyc::CreateApplication();
 
-	app->OnClientInit();
 	app->OnCoreInit();
+	app->OnClientInit();
 
 	while (cyc::HasWindow())
 	{
-		app->OnClientUpdate();
 		app->OnCoreUpdate();
+		app->OnClientUpdate();
 	}
 
 	app->OnClientDestroy();

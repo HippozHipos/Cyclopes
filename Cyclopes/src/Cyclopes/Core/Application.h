@@ -4,7 +4,8 @@
 #include "Log.h"
 
 #include "Cyclopes/Core/Window.h"
-#include "Cyclopes/Renderer/Renderer.h"
+
+#include "Cyclopes/ImGui/ImGuiContext.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //												SUMMARY
@@ -23,6 +24,7 @@
 
 namespace cyc {
 
+	class Renderer;
 	class Application
 	{
 	public:
@@ -34,7 +36,6 @@ namespace cyc {
 		virtual void OnUpdate() = 0;
 		virtual void OnDestroy() = 0;
 
-		void RegisterWindow(Window* win);
 
 	public:
 		void OnCoreInit();
@@ -46,10 +47,15 @@ namespace cyc {
 		void OnClientDestroy();
 
 	protected:
+		void RegisterWindow(Window* win);
+		void SetImGuiRenderWindow(Window* win);
+		
+	protected:
 		Cyc_Scoped<Renderer> m_Renderer;
 
 	private:
 		Cyc_Vector<Window*> m_Windows;
+		ImGuiContext m_ImGuiContext;
 	};
 
 	Application* CreateApplication();

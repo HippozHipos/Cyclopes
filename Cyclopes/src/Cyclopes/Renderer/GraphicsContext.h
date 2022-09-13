@@ -16,9 +16,12 @@ namespace cyc {
 
 	public:
 		virtual void OnInit() = 0;
+		virtual void OnDestory() = 0;
+
 		virtual void MakeCurrent(const Cyc_String& nameId) = 0;
 		virtual void SwapBuffers(const Cyc_String& nameId) = 0;
 		virtual void PushWindow(Window* window) = 0;
+		virtual Window* GetTargetWindow() const = 0;
 	};
 
 }
