@@ -13,14 +13,12 @@ namespace cyc {
 		Renderer();
 
 	public:
-		void OnInit();
-		void SetTargetWindow(const Cyc_String& nameId);
-		void SwapBuffers(const Cyc_String& nameId);
-		Window* GetTargetWindow() const;
-
-		void PushWindow(Window* window);
-
+		void OnInit(Window* window);
+		void SwapBuffers();
 		void OnDestory();
+		void MakeCurrent();
+
+		HGLRC GetRenderContext();
 
 	private:
 		Cyc_Scoped<GraphicsContext> m_GfxContext = nullptr;

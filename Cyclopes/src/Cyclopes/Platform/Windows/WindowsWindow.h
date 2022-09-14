@@ -88,7 +88,7 @@ namespace cyc {
 	class WindowsWindow : public Window
 	{
 	public:
-		WindowsWindow(const std::string& nameId, const WindowProperties& props);
+		WindowsWindow(const WindowProperties& props);
 		~WindowsWindow();
 
 	public:
@@ -100,7 +100,6 @@ namespace cyc {
 		WindowEvent ReadEvent() const override;
 		bool IsFocused() const override;
 		void Focus() override;
-		const std::string& GetNameId() const override;
 
 		const Mouse& GetMouse() const override;
 		const Keyboard& GetKeyboard() const override;
@@ -116,7 +115,6 @@ namespace cyc {
 		void Init();
 
 	private:
-		Cyc_String m_NameId = "";
 		WindowProperties m_Properties;
 		Cyc_Scoped<Win32NativeWindow> m_Window;
 		LayerStack m_Layers;

@@ -324,8 +324,8 @@ namespace cyc {
 		return m_Keyboard;
 	}
 
-	WindowsWindow::WindowsWindow(const std::string& nameId, const WindowProperties& props) :
-		m_NameId(nameId), m_Layers(this), m_Properties(props)
+	WindowsWindow::WindowsWindow(const WindowProperties& props) :
+			m_Layers(this), m_Properties(props)
 	{
 		Init();
 	}
@@ -379,11 +379,6 @@ namespace cyc {
 	void WindowsWindow::Focus()
 	{
 		::SetFocus(m_Window->GetHandle());
-	}
-
-	const std::string& WindowsWindow::GetNameId() const
-	{
-		return m_NameId;
 	}
 
 	int WindowsWindow::GetWindowCount()

@@ -41,7 +41,6 @@ namespace cyc {
 		virtual bool HasEvent() const = 0;
 		virtual WindowEvent ReadEvent() const = 0;
 		virtual LayerStack& GetLayerStack() = 0;
-		virtual const std::string& GetNameId() const = 0;
 
 	public:
 		//native window refers to the underlying os-specific window.
@@ -51,16 +50,10 @@ namespace cyc {
 
 	public:
 		static Cyc_Scoped<Window> 
-		Create(const std::string& nameId, 
-			const WindowProperties& props = {100, 100, 600, 500, "Cyclopes Window"});
-		void SetIsRegistered(); 
-		bool IsRegisreted() const;
+		Create(const WindowProperties& props = {100, 100, 600, 500, "Cyclopes Window"});
 
 	protected:
 		bool m_VSyncEnabled = false;
-
-	private:
-		bool m_IsResgistered = false;
 	};
 
 	bool HasWindow();

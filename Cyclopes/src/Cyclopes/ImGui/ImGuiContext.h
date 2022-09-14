@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Cyclopes/Core/Window.h"
-#include <imgui_internal.h>
 
 namespace cyc {
 
@@ -9,12 +8,11 @@ namespace cyc {
 	{
 	public:
 		void OnInit();
-		void SetRenderWindow(Window* window);
-		Window* GetRenderWindow() const;
+		void SetRenderWindow(Window* window, HGLRC glRenderContext);
 		void OnDestroy();
 
 		void OnBeginRender();
-		void OnEndRender();
+		bool OnEndRender();
 
 	private:
 		Window* m_RenderWindow = nullptr;

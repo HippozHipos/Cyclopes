@@ -60,7 +60,6 @@ namespace cyc {
 
 	void LayerStack::PushLayer(Layer* layer, int index, bool overlay)
 	{
-		AssertWindowRegistered(layer, "[LayerStack::PushLayer]");
 		layer->SetWindow(m_Window);
 		layer->SetRenderer(renderer);
 		if (!overlay)
@@ -85,7 +84,6 @@ namespace cyc {
 
 	void LayerStack::PushFrontLayer(Layer* layer, bool overlay)
 	{
-		AssertWindowRegistered(layer, "[LayerStack::PushFrontLayer]");
 		layer->SetWindow(m_Window);
 		layer->SetRenderer(renderer);
 		if (!overlay)
@@ -102,7 +100,6 @@ namespace cyc {
 
 	void LayerStack::PushBackLayer(Layer* layer, bool overlay)
 	{
-		AssertWindowRegistered(layer, "[LayerStack::PushBackLayer]");
 		layer->SetWindow(m_Window);
 		layer->SetRenderer(renderer);
 		if (!overlay)
@@ -115,15 +112,5 @@ namespace cyc {
 			m_Layers.emplace_back(layer);
 			m_NOverlays++;
 		}
-	}
-
-	void LayerStack::AssertWindowRegistered(const Layer* layer, const Cyc_String& funcName) const
-	{
-		CYC_CORE_ASSERT(m_Window->IsRegisreted(),
-			funcName +
-			" [Layer = \"" + layer->GetName() + "\"]" 
-			" Window needs to be registered before using layer system\n"
-		    "Hint: Call ResigsterWindow(window to which the layer is to be added) in your application class"
-		    " before adding layers to the window.");
 	}
 }

@@ -8,11 +8,11 @@ namespace cyc {
 	{
 	}
 
-	void Layer::OnImGuiRender()
-	{
-
-
-	}
+	void Layer::OnAttach() {}
+	void Layer::OnUpdate() {}
+	void Layer::OnEvent(Event& e) { e.propagate = true; }
+	void Layer::OnDetach() {}
+	void Layer::OnImGuiRender() {}
 
 	const Cyc_String& Layer::GetName() const
 	{
@@ -21,7 +21,7 @@ namespace cyc {
 
 	void Layer::SetWindow(Window* win)
 	{
-		m_Window = win;
+		window = win;
 	}
 
 	void Layer::SetRenderer(Renderer* renderer)

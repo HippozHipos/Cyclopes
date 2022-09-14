@@ -28,7 +28,7 @@ namespace cyc {
 	class Application
 	{
 	public:
-		Application();
+		Application(int width, int height);
 		virtual ~Application() = default;
 
 	public:
@@ -45,16 +45,12 @@ namespace cyc {
 		void OnClientInit();
 		void OnClientUpdate();
 		void OnClientDestroy();
-
-	protected:
-		void RegisterWindow(Window* win);
-		void SetImGuiRenderWindow(Window* win);
 		
 	protected:
 		Cyc_Scoped<Renderer> m_Renderer;
+		Cyc_Scoped<Window> m_Window;
 
 	private:
-		Cyc_Vector<Window*> m_Windows;
 		ImGuiContext m_ImGuiContext;
 	};
 

@@ -10,34 +10,29 @@ namespace cyc {
 		m_GfxContext = GraphicsContext::Create();
 	}
 
-	void Renderer::OnInit()
+	void Renderer::OnInit(Window* window)
 	{
-		m_GfxContext->OnInit();
+		m_GfxContext->OnInit(window);
 	}
 
-	void Renderer::SetTargetWindow(const Cyc_String& nameId)
+	void Renderer::SwapBuffers()
 	{
-		m_GfxContext->MakeCurrent(nameId);
-	}
-
-	void Renderer::SwapBuffers(const Cyc_String& nameId)
-	{
-		m_GfxContext->SwapBuffers(nameId);
-	}
-
-	Window* Renderer::GetTargetWindow() const
-	{
-		return m_GfxContext->GetTargetWindow();;
-	}
-
-	void Renderer::PushWindow(Window* window)
-	{
-		m_GfxContext->PushWindow(window);
+		m_GfxContext->SwapBuffers();
 	}
 
 	void Renderer::OnDestory()
 	{
 		m_GfxContext->OnDestory();
+	}
+
+	void Renderer::MakeCurrent()
+	{
+		m_GfxContext->MakeCurrent();
+	}
+
+	HGLRC Renderer::GetRenderContext()
+	{
+		return (HGLRC)m_GfxContext->GetContext();
 	}
 
 }

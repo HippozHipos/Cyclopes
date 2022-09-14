@@ -784,4 +784,3 @@ static void load_procs(GL3WGetProcAddressProc proc)
 }
 #endif
 #endif
-

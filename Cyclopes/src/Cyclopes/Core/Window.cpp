@@ -1,5 +1,4 @@
 #include "Cycpch.h"
-
 #include "Window.h"
 
 #ifdef CYC_PLATFORM_WINDOWS
@@ -8,21 +7,11 @@
 
 namespace cyc {
 
-	Cyc_Scoped<Window> Window::Create(const Cyc_String& nameId, const WindowProperties& props)
+	Cyc_Scoped<Window> Window::Create(const WindowProperties& props)
 	{
 #ifdef CYC_PLATFORM_WINDOWS
-		return Cyc_MakeScoped<WindowsWindow>(nameId, props);
+		return Cyc_MakeScoped<WindowsWindow>(props);
 #endif
-	}
-
-	void Window::SetIsRegistered()
-	{
-		m_IsResgistered = true;
-	}
-
-	bool Window::IsRegisreted() const
-	{
-		return m_IsResgistered;
 	}
 
 	bool HasWindow()

@@ -13,10 +13,10 @@ namespace cyc {
 		virtual ~Layer() = default;
 
 	public:
-		virtual void OnAttach() = 0;
-		virtual void OnUpdate() = 0;
-		virtual void OnEvent(Event& e) = 0;
-		virtual void OnDetach() = 0;
+		virtual void OnAttach();
+		virtual void OnUpdate();
+		virtual void OnEvent(Event& e);
+		virtual void OnDetach();
 		virtual void OnImGuiRender();
 
 		const Cyc_String& GetName() const;
@@ -25,7 +25,7 @@ namespace cyc {
 		void SetRenderer(Renderer* renderer);
 
 	protected:
-		Window* m_Window = nullptr;
+		Window* window = nullptr;
 		Renderer* renderer = nullptr;
 
 	private:

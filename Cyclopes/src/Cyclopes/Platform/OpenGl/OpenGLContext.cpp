@@ -8,7 +8,7 @@
 
 namespace cyc {
 
-	void OpenGLContext::OnInit()
+	void OpenGLContext::OnInit(Window* window)
 	{
 		m_Pfd =
 		{
@@ -29,69 +29,40 @@ namespace cyc {
 			0,
 			0, 0, 0
 		};
-	}
 
-	void OpenGLContext::MakeCurrent(const std::string& nameId)
-	{
-		auto it = m_WinNameIDGLRCWinInfoMap.find(nameId);
+		m_Dc = ::GetDC((HWND)window->GetNativeWindow());
+		m_GLRenderContext = wglCreateContext(m_Dc);
 
-		if (it == m_WinNameIDGLRCWinInfoMap.end())
+		int pixelFormal = ChoosePixelFormat(m_Dc, &m_Pfd);
+		SetPixelFormat(m_Dc, pixelFormal, &m_Pfd);
+		m_GLRenderContext = wglCreateContext(m_Dc);
+
+		wglMakeCurrent(m_Dc, m_GLRenderContext);
+
+		if (!gladLoadGL())
 		{
-			CYC_CORE_ASSERT(false,
-				"[OpenGLContext::MakeCurrent] Window with name = \"" + nameId + 
-				"\" has not been registered.");
+			CYC_CORE_ASSERT(false, "Glad loader failed");
 		}
 
-		HDC dc = ::GetDC((HWND)it->second.window->GetNativeWindow());
-
-		m_targetWindow = it->second.window;
-		wglMakeCurrent(dc, it->second.glRenderContext);
 	}
 
-	void OpenGLContext::SwapBuffers(const std::string& nameId)
-	{
-		auto it = m_WinNameIDGLRCWinInfoMap.find(nameId);
-
-		if (it == m_WinNameIDGLRCWinInfoMap.end())
-		{
-			CYC_CORE_ASSERT(false,
-				"[OpenGLContext::SwapBuffers] Window with name = \"" + nameId + 
-				"\" has not been registered.");
-		}
-
-		HDC dc = ::GetDC((HWND)it->second.window->GetNativeWindow());
-		::SwapBuffers(dc);
-	}
-
-	void OpenGLContext::PushWindow(Window* window)
-	{
-		HDC dc = ::GetDC((HWND)window->GetNativeWindow());
-		int pixelFormal = ChoosePixelFormat(dc, &m_Pfd);
-		SetPixelFormat(dc, pixelFormal, &m_Pfd);
-
-		m_WinNameIDGLRCWinInfoMap.insert(
-			std::pair<std::string, GLRCWinInfo>(
-				window->GetNameId(), 
-				{ wglCreateContext(dc), window }
-		));
-
-		if (m_FirstWindow)
-		{
-			m_FirstWindow = false;
-			MakeCurrent(window->GetNameId());
-			if (!gladLoadGL())
-			{
-				CYC_CORE_ASSERT(false, "Function gladLoadGL failed");
-			}
-		}
-	}
-
-	Window* OpenGLContext::GetTargetWindow() const
-	{
-		return m_targetWindow;
+	void OpenGLContext::SwapBuffers()
+	{		
+		::SwapBuffers(m_Dc);
 	}
 
 	void OpenGLContext::OnDestory()
 	{
+		wglDeleteContext(m_GLRenderContext);
+	}
+
+	void OpenGLContext::MakeCurrent()
+	{
+		wglMakeCurrent(m_Dc, m_GLRenderContext);
+	}
+
+	void* OpenGLContext::GetContext()
+	{
+		return (void*)m_GLRenderContext;
 	}
 }
