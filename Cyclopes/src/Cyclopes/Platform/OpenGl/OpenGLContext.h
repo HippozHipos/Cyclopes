@@ -4,6 +4,8 @@
 
 #include "Cyclopes/Core/Window.h"
 
+#include "wglext.h"
+
 namespace cyc {
 
 	class OpenGLContext : public GraphicsContext
@@ -15,9 +17,14 @@ namespace cyc {
 	public:
 		void OnInit(Window* window) override;
 		void SwapBuffers() override;
-		void OnDestory() override;
+		void OnDestroy() override;
 		void MakeCurrent() override;
 		void* GetContext() override;
+		void SetSwapInterval(int interval) override;
+		void SetViewport(float x, float y, float width, float height) override;
+
+	private:
+		int* GetAttributeArray() const;
 
 	private:
 		PIXELFORMATDESCRIPTOR m_Pfd{};

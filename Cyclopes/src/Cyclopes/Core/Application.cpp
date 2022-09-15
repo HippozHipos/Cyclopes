@@ -9,6 +9,8 @@
 #include "Cyclopes/Renderer/Renderer.h"
 #include "Cyclopes/Core/Assert.h"
 
+#include "glad/glad.h"
+
 namespace cyc {
     Application::Application(int width, int height)
     {
@@ -21,11 +23,12 @@ namespace cyc {
     {
         m_Renderer->OnInit(m_Window.get());
         m_ImGuiContext.OnInit();
-        m_ImGuiContext.SetRenderWindow(m_Window.get(), m_Renderer->GetRenderContext());
+        m_ImGuiContext.InitWin32OpenGL(m_Window.get());
     }
 
     void Application::OnCoreUpdate()
     {
+        m_Window->UpdateProperty();
         while (m_Window->HasEvent())
         {
             cyc::WindowEvent we = m_Window->ReadEvent();
@@ -34,11 +37,14 @@ namespace cyc {
                 m_Window->Destroy();
             }
         }
+
+        WindowProperties p = m_Window->GetProperty();
+        m_Renderer->SetViewport((float)p.x, (float)p.y, (float)p.width, (float)p.height);
     }
 
     void Application::OnCoreDestroy()
     {
-        m_Renderer->OnDestory();
+        m_Renderer->OnDestroy();
         m_ImGuiContext.OnDestroy();
     }
 
@@ -59,11 +65,7 @@ namespace cyc {
 
         m_ImGuiContext.OnBeginRender();
         ls.OnImGuiRender();
-
-        if (m_ImGuiContext.OnEndRender())
-        {
-            m_Renderer->MakeCurrent();
-        }
+        m_ImGuiContext.OnEndRender();
 
         m_Renderer->SwapBuffers();
     }

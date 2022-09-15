@@ -41,6 +41,8 @@ namespace cyc {
 		virtual bool HasEvent() const = 0;
 		virtual WindowEvent ReadEvent() const = 0;
 		virtual LayerStack& GetLayerStack() = 0;
+		virtual void UpdateProperty() = 0;
+		virtual WindowProperties GetProperty() const = 0;
 
 	public:
 		//native window refers to the underlying os-specific window.

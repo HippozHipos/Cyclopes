@@ -2,7 +2,9 @@
 
 #include "Log.h"
 
-#define CYC_STRINGIFY(a) #a
+#ifndef CYC_STRINGIFY
+	#define CYC_STRINGIFY(a) #a
+#endif
 
 #ifdef CYC_PLATFORM_WINDOWS
 	#define CYC_DEBUGBREAK __debugbreak
@@ -22,7 +24,7 @@
 						CYC_STRINGIFY(Cyclopes Core Assertion Failed) L"\n\n"	\
 						error L"\n\n"											\
 						CYC_STRINGIFY([FILE] ) __FILE__ L"\n\n"					\
-						CYC_STRINGIFY([LINE] ) + CYC_TO_STRING(__LINE__)		\
+						CYC_STRINGIFY([LINE] ) + std::to_wstring(__LINE__)		\
 					);															\
 					CYC_DEBUGBREAK();											\
 				}																\

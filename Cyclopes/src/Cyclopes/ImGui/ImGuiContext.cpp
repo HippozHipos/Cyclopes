@@ -11,32 +11,23 @@
 namespace cyc {
 	void ImGuiContext::OnInit()
 	{
+		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 
 		ImGuiIO& io = ImGui::GetIO();
 
-		io.BackendFlags |= ImGuiBackendFlags_PlatformHasViewports;
-
-		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       	
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;      
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         
-
-		ImGuiStyle& style = ImGui::GetStyle();
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			style.WindowRounding = 0.0f;
-			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-		}
 
 		ImGui::StyleColorsDark();
 	}
 
-	void ImGuiContext::SetRenderWindow(Window* window, HGLRC glRenderContext)
+	void ImGuiContext::InitWin32OpenGL(Window* window)
 	{
 		CYC_CORE_ASSERT(m_RenderWindow == nullptr,
 			"[ImGuiContext::SetRenderWindow] ImGui Win32 context already initialized");
 
-		ImGui_ImplWin32_Init((HWND)window->GetNativeWindow(), glRenderContext);
+		ImGui_ImplWin32_Init((HWND)window->GetNativeWindow());
 		ImGui_ImplOpenGL3_Init("#version 410");
 
 		m_RenderWindow = window;
@@ -57,18 +48,10 @@ namespace cyc {
 		ImGui::DockSpaceOverViewport();
 	}
 
-	bool ImGuiContext::OnEndRender()
+	void ImGuiContext::OnEndRender()
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-		{
-			ImGui::UpdatePlatformWindows();
-			ImGui::RenderPlatformWindowsDefault();
-			return true;
-		}
-		return false;
 	}
 }

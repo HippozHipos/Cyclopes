@@ -16,17 +16,17 @@ int CALLBACK WinMain(
 {
 	cyc::Application* app = cyc::CreateApplication();
 
-	app->OnCoreInit();
 	app->OnClientInit();
+	app->OnCoreInit();
 
 	while (cyc::HasWindow())
 	{
-		app->OnCoreUpdate();
 		app->OnClientUpdate();
+		app->OnCoreUpdate();
 	}
 
-	app->OnClientDestroy();
 	app->OnCoreDestroy();
+	app->OnClientDestroy();
 
 	delete app;
 

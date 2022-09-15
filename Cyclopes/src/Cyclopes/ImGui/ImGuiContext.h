@@ -8,11 +8,11 @@ namespace cyc {
 	{
 	public:
 		void OnInit();
-		void SetRenderWindow(Window* window, HGLRC glRenderContext);
+		void InitWin32OpenGL(Window* window);
 		void OnDestroy();
 
 		void OnBeginRender();
-		bool OnEndRender();
+		void OnEndRender();
 
 	private:
 		Window* m_RenderWindow = nullptr;

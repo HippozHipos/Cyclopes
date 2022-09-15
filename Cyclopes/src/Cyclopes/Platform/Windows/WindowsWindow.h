@@ -21,6 +21,8 @@
 
 //TODO: Make window focus when any part of a window is click
 
+//TODO: In Win32NativeWindow Update x, y, width and height whenever window is resized or moveed
+
 namespace cyc {
 
 	class WindowsWindow;
@@ -53,6 +55,13 @@ namespace cyc {
 		bool HasEvent() const;
 		WindowEvent ReadEvent() const;
 
+	public:
+		int x = 0;
+		int y = 0;
+		int width = 0;
+		int height = 0;
+
+
 	private:
 		void TrimBuffer();
 
@@ -66,10 +75,6 @@ namespace cyc {
 	private:
 		static constexpr std::uint32_t s_MaxBufferSize = 32u;
 		mutable Cyc_Queue<WindowEvent> m_EventBuffer;
-
-	private:
-		int width = 0;
-		int height = 0;
 
 	private:
 		LayerStack& layers;
@@ -100,6 +105,7 @@ namespace cyc {
 		WindowEvent ReadEvent() const override;
 		bool IsFocused() const override;
 		void Focus() override;
+		WindowProperties GetProperty() const override;
 
 		const Mouse& GetMouse() const override;
 		const Keyboard& GetKeyboard() const override;
@@ -107,6 +113,7 @@ namespace cyc {
 		LayerStack& GetLayerStack() override;
 
 		void* GetNativeWindow() override;
+		void UpdateProperty() override;
 
 	public:
 		static int GetWindowCount();	

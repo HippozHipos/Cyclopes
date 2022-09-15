@@ -15,10 +15,11 @@ namespace cyc {
 	public:
 		void OnInit(Window* window);
 		void SwapBuffers();
-		void OnDestory();
+		void OnDestroy();
 		void MakeCurrent();
 
-		HGLRC GetRenderContext();
+		void* GetRenderContext();
+		void SetViewport(float x, float y, float width, float height);
 
 	private:
 		Cyc_Scoped<GraphicsContext> m_GfxContext = nullptr;

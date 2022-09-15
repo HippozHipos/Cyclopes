@@ -16,10 +16,12 @@ namespace cyc {
 
 	public:
 		virtual void OnInit(Window* window) = 0;
-		virtual void OnDestory() = 0;
+		virtual void OnDestroy() = 0;
 		virtual void SwapBuffers() = 0;
 		virtual void MakeCurrent() = 0;
 		virtual void* GetContext() = 0;
+		virtual void SetSwapInterval(int interval) = 0;
+		virtual void SetViewport(float x, float y, float width, float height) = 0; 
 	};
 
 }

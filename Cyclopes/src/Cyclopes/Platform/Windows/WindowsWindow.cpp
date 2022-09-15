@@ -34,7 +34,7 @@ namespace cyc {
 		m_WndClass.hIconSm = nullptr;
 
 		ATOM res = ::RegisterClassEx(&m_WndClass);
-		CYC_WIN32_LASTERRORMSG(res, this, L"RegisterClassEx function failed."
+		CYC_WIN32_LASTERROR_MSGBOX(res, this, L"RegisterClassEx function failed."
 		                                    "Could not register Win32 window");
 
 		//convert string to wstring
@@ -53,7 +53,7 @@ namespace cyc {
 			this
 		);
 
-		CYC_WIN32_LASTERRORMSG(m_HWnd, this, L"CreateWindowEx function failed. "
+		CYC_WIN32_LASTERROR_MSGBOX(m_HWnd, this, L"CreateWindowEx function failed. "
 												"Window Handle is NULL");
 
 		ShowWindow(m_HWnd, SW_SHOWDEFAULT);
@@ -334,6 +334,14 @@ namespace cyc {
 	{
 	}
 
+	void WindowsWindow::UpdateProperty()
+	{
+		m_Properties.x = m_Window->x;
+		m_Properties.y = m_Window->y;
+		m_Properties.width = m_Window->width;
+		m_Properties.height = m_Window->height;
+	}
+
 	void WindowsWindow::Init()
 	{
 		m_Window = std::make_unique<Win32NativeWindow>(m_Layers);
@@ -381,6 +389,11 @@ namespace cyc {
 		::SetFocus(m_Window->GetHandle());
 	}
 
+	WindowProperties WindowsWindow::GetProperty() const
+	{
+		return m_Properties;
+	}
+
 	int WindowsWindow::GetWindowCount()
 	{
 		return Win32NativeWindow::GetWindowCount();
@@ -391,6 +404,7 @@ namespace cyc {
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 		Cyc_WString wTitle = converter.from_bytes(title);
 		SetWindowText(m_Window->GetHandle(), wTitle.c_str());
+		m_Properties.title = title;
 	}
 
 	const Mouse& WindowsWindow::GetMouse() const

@@ -20,9 +20,9 @@ namespace cyc {
 		m_GfxContext->SwapBuffers();
 	}
 
-	void Renderer::OnDestory()
+	void Renderer::OnDestroy()
 	{
-		m_GfxContext->OnDestory();
+		m_GfxContext->OnDestroy();
 	}
 
 	void Renderer::MakeCurrent()
@@ -30,9 +30,14 @@ namespace cyc {
 		m_GfxContext->MakeCurrent();
 	}
 
-	HGLRC Renderer::GetRenderContext()
+	void* Renderer::GetRenderContext()
 	{
-		return (HGLRC)m_GfxContext->GetContext();
+		return m_GfxContext->GetContext();
+	}
+
+	void Renderer::SetViewport(float x, float y, float width, float height)
+	{
+		m_GfxContext->SetViewport(x, y, width, height);
 	}
 
 }
