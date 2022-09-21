@@ -52,6 +52,8 @@ namespace cyc {
 
 	private:
 		ImGuiContext m_ImGuiContext;
+		unsigned int VBO; ///test
+		unsigned int VAO; ///test
 	};
 
 	Application* CreateApplication();

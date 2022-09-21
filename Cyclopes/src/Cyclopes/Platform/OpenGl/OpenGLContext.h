@@ -24,7 +24,7 @@ namespace cyc {
 		void SetViewport(float x, float y, float width, float height) override;
 
 	private:
-		int* GetAttributeArray() const;
+		void GetAttributeArray(int attributeArr[9]) const;
 
 	private:
 		PIXELFORMATDESCRIPTOR m_Pfd{};

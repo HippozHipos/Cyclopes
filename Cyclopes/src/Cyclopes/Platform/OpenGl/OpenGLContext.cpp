@@ -64,7 +64,9 @@ namespace cyc {
 		CYC_WIN32_LASTERROR(wglCreateContextAttribsARB,
 			"GetAnyGLFuncAddress() failed. Failed to load wglCreateContextAttribsARB function pointer");
 
-		m_GLRenderContext = wglCreateContextAttribsARB(m_Dc, 0, GetAttributeArray());
+		int arrtibuteArray[9];
+		GetAttributeArray(arrtibuteArray);
+		m_GLRenderContext = wglCreateContextAttribsARB(m_Dc, 0, arrtibuteArray);
 		CYC_WIN32_LASTERROR(wglCreateContextAttribsARB,
 			"wglCreateContextAttribsARB() failed. Could not create gl render context from given atttributes");
 
@@ -75,15 +77,21 @@ namespace cyc {
 		MakeCurrent();
 		SetSwapInterval(1);
 
+#if defined(CYC_DEBUG) || defined(CYC_RELEASE)
 		glEnable(GL_DEBUG_OUTPUT);
 		glDebugMessageCallback(OpenGLErrorMessageCallback, 0);
+#endif
 	}
 
 	void OpenGLContext::SwapBuffers()
 	{		
 		HDC dc = ::GetDC(m_HWnd);
 
-		if (!dc) return; //window has probably been closed and handle released.
+		if (!dc)
+		{
+			CYC_CORE_WARN("[OpenGLContext::SwapBuffers] Couldn't retrieve Device Context from window handle. Is window handle valid?");
+			return;
+		}
 
 		BOOL res = ::SwapBuffers(dc);
 		CYC_WIN32_LASTERROR(res,
@@ -127,22 +135,20 @@ namespace cyc {
 		glViewport((int)x, (int)y, (int)width, (int)height);
 	}
 
-	int* OpenGLContext::GetAttributeArray() const
+	void OpenGLContext::GetAttributeArray(int attributeArr[9]) const
 	{
 		int flags = WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB;
 #if CYC_DEBUG
 		flags |= WGL_CONTEXT_DEBUG_BIT_ARB;
 #endif
-
-		int contextAttributes[] =
-		{
-			WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
-			WGL_CONTEXT_MINOR_VERSION_ARB, 3,
-			WGL_CONTEXT_FLAGS_ARB, flags,
-			WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
-			0
-		};
-
-		return contextAttributes;
+		attributeArr[0] = WGL_CONTEXT_MAJOR_VERSION_ARB;
+		attributeArr[1] = 3;
+		attributeArr[2] = WGL_CONTEXT_MINOR_VERSION_ARB;
+		attributeArr[3] = 3;
+		attributeArr[4] = WGL_CONTEXT_FLAGS_ARB;
+		attributeArr[5] = flags;
+		attributeArr[6] = WGL_CONTEXT_PROFILE_MASK_ARB;
+		attributeArr[7] = WGL_CONTEXT_CORE_PROFILE_BIT_ARB;
+		attributeArr[8] = 0;
 	}
 }

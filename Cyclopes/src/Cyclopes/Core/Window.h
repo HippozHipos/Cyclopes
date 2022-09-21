@@ -58,6 +58,6 @@ namespace cyc {
 		bool m_VSyncEnabled = false;
 	};
 
-	bool HasWindow();
+	bool RunMessagePump();
 }
 

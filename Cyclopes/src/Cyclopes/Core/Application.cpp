@@ -24,6 +24,27 @@ namespace cyc {
         m_Renderer->OnInit(m_Window.get());
         m_ImGuiContext.OnInit();
         m_ImGuiContext.InitWin32OpenGL(m_Window.get());
+
+        //////////////////////testt/////////////////////////
+
+        float vertices[] = {
+            -0.5f, -0.5f, 0.0f,
+             0.5f, -0.5f, 0.0f,
+             0.0f,  0.5f, 0.0f
+        };
+
+        glGenVertexArrays(1, &VAO);
+        glGenBuffers(1, &VBO);
+
+        glBindVertexArray(VAO);
+        
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+
+        //////////////////////testt/////////////////////////
     }
 
     void Application::OnCoreUpdate()
@@ -40,12 +61,21 @@ namespace cyc {
 
         WindowProperties p = m_Window->GetProperty();
         m_Renderer->SetViewport((float)p.x, (float)p.y, (float)p.width, (float)p.height);
+
     }
 
     void Application::OnCoreDestroy()
     {
         m_Renderer->OnDestroy();
         m_ImGuiContext.OnDestroy();
+
+        //////////////////////testt/////////////////////////
+
+        glDeleteBuffers(1, &VBO);
+        glDeleteBuffers(1, &VAO);
+
+        //////////////////////testt/////////////////////////
+
     }
 
     void Application::OnClientInit()
@@ -66,6 +96,12 @@ namespace cyc {
         m_ImGuiContext.OnBeginRender();
         ls.OnImGuiRender();
         m_ImGuiContext.OnEndRender();
+
+        //////////////////////testt/////////////////////////
+
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        //////////////////////testt/////////////////////////
 
         m_Renderer->SwapBuffers();
     }

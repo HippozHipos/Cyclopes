@@ -28,7 +28,7 @@ namespace cyc {
 
 
 
-#define CYC_WIN32_LASTERROR_MSGBOX(cond, win, msg)							\
+#define CYC_WIN32_LASTERROR_MSGBOX(cond, win, msg)						\
 	{																	\
 		if (!(cond))													\
 		{																\
@@ -60,5 +60,6 @@ namespace cyc {
 
 #else //CYC_DEBUG
 	#define CYC_WIN32_ERRORMSG(cond, win, errorCode, msg)	
-	#define CYC_WIN32_LASTERRORMSG(cond, win, msg)		
+	#define CYC_WIN32_LASTERROR_MSGBOX(cond, win, msg)		
+	#define CYC_WIN32_LASTERROR(cond, msg)		
 #endif

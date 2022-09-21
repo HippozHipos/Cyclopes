@@ -1,6 +1,8 @@
 #include "Cycpch.h"
 #include "Window.h"
 
+#include "Cyclopes/Core/Log.h"
+
 #ifdef CYC_PLATFORM_WINDOWS
 	#include "Cyclopes/Platform/Windows/WindowsWindow.h"
 #endif
@@ -14,16 +16,12 @@ namespace cyc {
 #endif
 	}
 
-	bool HasWindow()
+	bool RunMessagePump()
 	{
 #ifdef CYC_PLATFORM_WINDOWS
 		MSG msg;
 		while (PeekMessage(&msg, nullptr, NULL, NULL, PM_REMOVE))
 		{
-			//msg.wParam contains quit message. Might want to return that
-			if (WindowsWindow::GetWindowCount() == 0)
-				return false;
-
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
