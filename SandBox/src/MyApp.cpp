@@ -4,6 +4,8 @@
 
 #include <Cyclopes/Core/Assert.h>
 
+#include "glad/glad.h"
+
 class MyLayer : public cyc::Layer
 {
 public:
@@ -57,6 +59,7 @@ public:
 
 private:
 	MyLayer layer;
+
 };
 
 cyc::Application* cyc::CreateApplication()
