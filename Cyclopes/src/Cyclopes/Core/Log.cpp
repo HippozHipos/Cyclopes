@@ -32,8 +32,6 @@ namespace cyc {
 
 		s_ClientLogger = spdlog::stdout_color_mt("CLIENT");
 		s_ClientLogger->set_level(spdlog::level::trace);
-
-		CYC_CORE_INFO("Logger Initialized");
 	}
 
 	Cyc_Ref<spdlog::logger>& Log::GetClientLogger()

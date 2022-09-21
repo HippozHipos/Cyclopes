@@ -13,6 +13,8 @@ namespace cyc {
 
 	void OpenGLContext::OnInit(Window* window)
 	{
+		m_HWnd = (HWND)window->GetNativeWindow();
+
 		m_Pfd =
 		{
 			sizeof(PIXELFORMATDESCRIPTOR),
@@ -79,7 +81,11 @@ namespace cyc {
 
 	void OpenGLContext::SwapBuffers()
 	{		
-		BOOL res = ::SwapBuffers(m_Dc);
+		HDC dc = ::GetDC(m_HWnd);
+
+		if (!dc) return; //window has probably been closed and handle released.
+
+		BOOL res = ::SwapBuffers(dc);
 		CYC_WIN32_LASTERROR(res,
 			"SwapBuffers() failed. Could not swap buffers with the given Device Context");
 	}

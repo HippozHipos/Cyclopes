@@ -30,6 +30,7 @@ namespace cyc {
 		PIXELFORMATDESCRIPTOR m_Pfd{};
 		HGLRC m_GLRenderContext = nullptr;
 		HDC m_Dc = nullptr;
+		HWND m_HWnd;
 	};
 
 }
