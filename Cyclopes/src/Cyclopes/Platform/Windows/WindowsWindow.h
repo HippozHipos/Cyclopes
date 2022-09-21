@@ -13,8 +13,6 @@
 #include "Cyclopes/Event/Keyboard.h"
 #include "Cyclopes/Event/WindowEvent.h"
 
-#include <string>
-
 //TODO: Window size currently includes non-clint region as well. Fix that.
 
 //TODO: Add support for window resizing

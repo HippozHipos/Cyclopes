@@ -19,6 +19,8 @@ public:
 	void OnUpdate() override 
 	{
 		cyc::RenderCommands::Clear(0.12, 0.12, 0.125, 0);
+
+
 	}
 
 	void OnImGuiRender() override

@@ -11,9 +11,12 @@
 
 #include "glad/glad.h"
 
+#include "Cyclopes/Platform/Windows/WindowsWindow.h"
+
 namespace cyc {
     Application::Application(int width, int height)
     {
+        m_Running = true;
         cyc::Log::Init();
         m_Window = Window::Create({100, 100, width, height});
         m_Renderer = Cyc_MakeScoped<Renderer>();
@@ -93,6 +96,7 @@ namespace cyc {
         LayerStack& ls = m_Window->GetLayerStack();
         ls.OnUpdate();
 
+
         m_ImGuiContext.OnBeginRender();
         ls.OnImGuiRender();
         m_ImGuiContext.OnEndRender();
@@ -112,6 +116,23 @@ namespace cyc {
 
         LayerStack& ls = m_Window->GetLayerStack();
         ls.OnDetach();
+    }
+
+    void Application::Run()
+    {
+        OnClientInit();
+        OnCoreInit();
+
+        while (m_Running)
+        {
+            cyc::RunMessagePump();
+            OnCoreUpdate();
+            OnClientUpdate();
+            m_Running = WindowsWindow::GetWindowCount(); //m_Running could be used to close window but keep application open
+        }
+
+        OnClientDestroy();
+        OnCoreDestroy();
     }
 
 }

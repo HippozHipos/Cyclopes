@@ -45,6 +45,9 @@ namespace cyc {
 		void OnClientInit();
 		void OnClientUpdate();
 		void OnClientDestroy();
+
+	public:
+		void Run();
 		
 	protected:
 		Cyc_Scoped<Renderer> m_Renderer;
@@ -52,6 +55,7 @@ namespace cyc {
 
 	private:
 		ImGuiContext m_ImGuiContext;
+		bool m_Running = false;
 		unsigned int VBO; ///test
 		unsigned int VAO; ///test
 	};
