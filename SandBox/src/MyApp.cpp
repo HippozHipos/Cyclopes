@@ -1,11 +1,5 @@
 #include <Cyclopes.h>
 
-#include <sstream>
-
-#include <Cyclopes/Core/Assert.h>
-
-#include "glad/glad.h"
-
 class MyLayer : public cyc::Layer
 {
 public:
@@ -16,23 +10,24 @@ public:
 	}
 
 public:
-	void OnUpdate() override 
+	void OnUpdate(float elapsedTime) override 
 	{
-		cyc::RenderCommands::Clear(0.12, 0.12, 0.125, 0);
-
-
+		m_ElapsedTime = elapsedTime;
 	}
 
 	void OnImGuiRender() override
 	{
-		ImGui::Begin("My Test Window");
-		ImGui::Text("Im Gui");
-		ImGui::End();
-
-		ImGui::Begin("Another Test Winodw");
-		ImGui::Text("Im Gui");
+		ImGui::Begin("Debug Window");
+		ImGui::Text("ElapsedTime = %f", m_ElapsedTime);
+		ImGui::Text("FPS = %f", fps);
 		ImGui::End();
 	}
+
+public:
+	float fps = 0;
+
+private:
+	float m_ElapsedTime = 0;
 };
 
 
@@ -42,17 +37,30 @@ public:
 	MyApp() :
 		cyc::Application(800, 500)
 	{
-		m_Window->SetTitle("Cyclopes Window");
+		window->SetTitle("Cyclopes Window");
 	}
 
 public:
 	void OnInit() override 
-	{
-		m_Window->GetLayerStack().PushBackLayer(&layer);
+	{	
+		window->GetLayerStack().PushBackLayer(&layer);
 	}
 
-	void OnUpdate() override 
+	void OnUpdate(float elapsedTime) override 
 	{
+		cyc::RenderCommands::Clear(0.12, 0.12, 0.125, 0);
+		layer.fps = GetFPS();
+	}
+
+	void OnImGuiRender() override
+	{
+		ImGui::Begin("Debug Window");
+		if (ImGui::Button("Toggle VSync"))
+		{
+			m_VSyncOn = !m_VSyncOn;
+			renderer->SetSwapInterval(m_VSyncOn);
+		}
+		ImGui::End();
 	}
 
 	void OnDestroy() override 
@@ -61,7 +69,7 @@ public:
 
 private:
 	MyLayer layer;
-
+	bool m_VSyncOn = true;
 };
 
 cyc::Application* cyc::CreateApplication()

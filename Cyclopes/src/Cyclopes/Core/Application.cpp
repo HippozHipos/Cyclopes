@@ -18,15 +18,17 @@ namespace cyc {
     {
         m_Running = true;
         cyc::Log::Init();
-        m_Window = Window::Create({100, 100, width, height});
-        m_Renderer = Cyc_MakeScoped<Renderer>();
+        window = Window::Create({100, 100, width, height});
+        renderer = Cyc_MakeScoped<Renderer>();
     }
 
     void Application::OnCoreInit()
     {
-        m_Renderer->OnInit(m_Window.get());
+        renderer->OnInit(window.get());
         m_ImGuiContext.OnInit();
-        m_ImGuiContext.InitWin32OpenGL(m_Window.get());
+        m_ImGuiContext.InitWin32OpenGL(window.get());
+
+        m_Timer.Reset();
 
         //////////////////////testt/////////////////////////
 
@@ -52,24 +54,23 @@ namespace cyc {
 
     void Application::OnCoreUpdate()
     {
-        m_Window->UpdateProperty();
-        while (m_Window->HasEvent())
+        window->UpdateProperty();
+        while (window->HasEvent())
         {
-            cyc::WindowEvent we = m_Window->ReadEvent();
+            cyc::WindowEvent we = window->ReadEvent();
             if (we.GetType() == cyc::EventType::W_CLOSE)
             {
-                m_Window->Destroy();
+                window->Destroy();
             }
         }
 
-        WindowProperties p = m_Window->GetProperty();
-        m_Renderer->SetViewport((float)p.x, (float)p.y, (float)p.width, (float)p.height);
-
+        WindowProperties p = window->GetProperty();
+        renderer->SetViewport((float)p.x, (float)p.y, (float)p.width, (float)p.height);
     }
 
     void Application::OnCoreDestroy()
     {
-        m_Renderer->OnDestroy();
+        renderer->OnDestroy();
         m_ImGuiContext.OnDestroy();
 
         //////////////////////testt/////////////////////////
@@ -81,23 +82,26 @@ namespace cyc {
 
     }
 
+    void Application::OnImGuiRender()
+    {
+
+    }
+
     void Application::OnClientInit()
     {
         OnInit();
-
-        LayerStack& ls = m_Window->GetLayerStack();
-        ls.OnAttach(m_Renderer.get());
+        LayerStack& ls = window->GetLayerStack();
+        ls.OnAttach(renderer.get());
     }
 
     void Application::OnClientUpdate()
     {
-        OnUpdate();
-
-        LayerStack& ls = m_Window->GetLayerStack();
-        ls.OnUpdate();
-
+        OnUpdate(m_ElapsedTime);
+        LayerStack& ls = window->GetLayerStack();
+        ls.OnUpdate(m_ElapsedTime);
 
         m_ImGuiContext.OnBeginRender();
+        OnImGuiRender();
         ls.OnImGuiRender();
         m_ImGuiContext.OnEndRender();
 
@@ -107,32 +111,44 @@ namespace cyc {
 
         //////////////////////testt/////////////////////////
 
-        m_Renderer->SwapBuffers();
+        if (window->GetWindowCount())
+            renderer->SwapBuffers();
     }
 
     void Application::OnClientDestroy()
     {
         OnDestroy();
-
-        LayerStack& ls = m_Window->GetLayerStack();
+        LayerStack& ls = window->GetLayerStack();
         ls.OnDetach();
     }
 
     void Application::Run()
     {
-        OnClientInit();
         OnCoreInit();
+        OnClientInit();
 
         while (m_Running)
         {
             cyc::RunMessagePump();
+            m_Timer.Reset();
             OnCoreUpdate();
             OnClientUpdate();
-            m_Running = WindowsWindow::GetWindowCount(); //m_Running could be used to close window but keep application open
+            m_ElapsedTime = GetElapsedTime();
+            m_Running = window->GetWindowCount(); //m_Running could be used to close window but keep application open
         }
 
         OnClientDestroy();
         OnCoreDestroy();
     }
 
+    int Application::GetFPS() const
+    {
+        return 1.0f / m_ElapsedTime;
+    }
+
+    float Application::GetElapsedTime() const
+    {
+        float dt = (float)m_Timer.Count<std::chrono::microseconds>();
+        return dt * 0.001f * 0.001f;    //convert to seconds
+    }
 }

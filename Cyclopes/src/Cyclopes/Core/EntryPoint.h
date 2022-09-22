@@ -1,11 +1,8 @@
 #pragma once
 
-#include "Log.h"
+extern cyc::Application* cyc::CreateApplication();
 
 #ifdef CYC_PLATFORM_WINDOWS
-
-
-extern cyc::Application* cyc::CreateApplication();
 
 int CALLBACK WinMain(
 		HINSTANCE hInstance,

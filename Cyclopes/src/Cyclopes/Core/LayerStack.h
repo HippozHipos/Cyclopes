@@ -53,12 +53,9 @@ namespace cyc {
 		void PushBackLayer(Layer* layer, bool overlay = false);
 
 	private:
-		void AssertWindowRegistered(const Layer* layer, const Cyc_String& funcName) const;
-
-	private:
 		void OnAttach(Renderer* renderer);
 		void OnEvent(Event& e);
-		void OnUpdate();
+		void OnUpdate(float elapsedTime);
 		void OnDetach();
 		void OnImGuiRender();
 

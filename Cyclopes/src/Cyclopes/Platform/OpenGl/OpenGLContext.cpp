@@ -87,11 +87,13 @@ namespace cyc {
 	{		
 		HDC dc = ::GetDC(m_HWnd);
 
+#if defined(CYC_DEBUG)
 		if (!dc)
 		{
 			CYC_CORE_WARN("[OpenGLContext::SwapBuffers] Couldn't retrieve Device Context from window handle. Is window handle valid?");
 			return;
 		}
+#endif
 
 		BOOL res = ::SwapBuffers(dc);
 		CYC_WIN32_LASTERROR(res,

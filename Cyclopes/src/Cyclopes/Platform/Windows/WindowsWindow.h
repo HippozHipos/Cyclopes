@@ -114,7 +114,7 @@ namespace cyc {
 		void UpdateProperty() override;
 
 	public:
-		static int GetWindowCount();	
+		int GetWindowCount() override;	
 
 	private:
 		void Init();

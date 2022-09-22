@@ -20,6 +20,11 @@ namespace cyc {
 		m_GfxContext->SwapBuffers();
 	}
 
+	void Renderer::SetSwapInterval(int interval)
+	{
+		m_GfxContext->SetSwapInterval(interval);
+	}
+
 	void Renderer::OnDestroy()
 	{
 		m_GfxContext->OnDestroy();

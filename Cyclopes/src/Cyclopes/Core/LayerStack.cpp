@@ -34,11 +34,11 @@ namespace cyc {
 		}
 	}
 
-	void LayerStack::OnUpdate()
+	void LayerStack::OnUpdate(float elapsedTime)
 	{
 		for (auto& it = m_Layers.rbegin(); it != m_Layers.rend(); ++it)
 		{
-			(*it)->OnUpdate();
+			(*it)->OnUpdate(elapsedTime);
 		}
 	}
 

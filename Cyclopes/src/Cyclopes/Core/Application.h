@@ -7,6 +7,8 @@
 
 #include "Cyclopes/ImGui/ImGuiContext.h"
 
+#include "Timer.h"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //												SUMMARY
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -33,8 +35,9 @@ namespace cyc {
 
 	public:
 		virtual void OnInit() = 0;
-		virtual void OnUpdate() = 0;
+		virtual void OnUpdate(float elapsedTime) = 0;
 		virtual void OnDestroy() = 0;
+		virtual void OnImGuiRender();
 
 
 	public:
@@ -50,14 +53,23 @@ namespace cyc {
 		void Run();
 		
 	protected:
-		Cyc_Scoped<Renderer> m_Renderer;
-		Cyc_Scoped<Window> m_Window;
+		Cyc_Scoped<Renderer> renderer;
+		Cyc_Scoped<Window> window;
+
+	protected:
+		int GetFPS() const;
+
+	private:
+		float GetElapsedTime() const;
 
 	private:
 		ImGuiContext m_ImGuiContext;
+		Timer m_Timer;
 		bool m_Running = false;
 		unsigned int VBO; ///test
 		unsigned int VAO; ///test
+
+		float m_ElapsedTime = 0;
 	};
 
 	Application* CreateApplication();
