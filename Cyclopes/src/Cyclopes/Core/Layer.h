@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Cyclopes/Event/Event.h"
+#include "Cyclopes/Renderer/GraphicsContext.h"
 
 namespace cyc {
 
@@ -23,10 +24,12 @@ namespace cyc {
 
 		void SetWindow(Window* win);
 		void SetRenderer(Renderer* renderer);
+		void Layer::SetGfx(GraphicsContext* gfx);
 
 	protected:
 		Window* window = nullptr;
 		Renderer* renderer = nullptr;
+		GraphicsContext* gfx = nullptr;
 
 	private:
 		Cyc_String m_Name;

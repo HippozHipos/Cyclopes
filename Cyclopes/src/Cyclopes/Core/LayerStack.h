@@ -6,6 +6,8 @@
 #include "Layer.h"
 #include "Cyclopes/Event/Event.h"
 
+#include "Cyclopes/Renderer/GraphicsContext.h"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //												SUMMARY
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,7 +55,7 @@ namespace cyc {
 		void PushBackLayer(Layer* layer, bool overlay = false);
 
 	private:
-		void OnAttach(Renderer* renderer);
+		void OnAttach(Renderer* renderer, GraphicsContext* gfx);
 		void OnEvent(Event& e);
 		void OnUpdate(float elapsedTime);
 		void OnDetach();
@@ -63,6 +65,7 @@ namespace cyc {
 		Cyc_Vector<Layer*> m_Layers;
 		Window* m_Window = nullptr;
 		Renderer* renderer = nullptr;
+		GraphicsContext* gfx = nullptr;
 		int m_NOverlays = 0; //number of overlay layers
 		int m_NNonOverlays = 0; //number of non-overlay layers
 	};

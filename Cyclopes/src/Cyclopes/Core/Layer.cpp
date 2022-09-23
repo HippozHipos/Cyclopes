@@ -29,4 +29,9 @@ namespace cyc {
 		this->renderer = renderer;
 	}
 
+	void Layer::SetGfx(GraphicsContext* gfx)
+	{
+		this->gfx = gfx;
+	}
+
 }

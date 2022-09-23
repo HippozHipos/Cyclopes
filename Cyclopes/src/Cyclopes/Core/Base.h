@@ -15,6 +15,7 @@
 #include <memory>
 #include <vector>
 #include <queue>
+#include <deque>
 #include <unordered_map>
 #include <xstring>
 
@@ -27,6 +28,7 @@ namespace cyc {
 	template<class Type> using Cyc_Vector = std::vector<Type>;
 
 	template<class Type> using Cyc_Queue = std::queue<Type>;
+	template<class Type> using Cyc_Deque = std::deque<Type>;
 
 	template<class First, class Second> using Cyc_UnorderedMap = std::unordered_map<First, Second>;
 

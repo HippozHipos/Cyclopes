@@ -19,12 +19,14 @@ namespace cyc {
         m_Running = true;
         cyc::Log::Init();
         window = Window::Create({100, 100, width, height});
+        gfx = GraphicsContext::Create();
         renderer = Cyc_MakeScoped<Renderer>();
     }
 
     void Application::OnCoreInit()
     {
-        renderer->OnInit(window.get());
+        gfx->OnInit(window.get());
+        renderer->OnInit(gfx.get());
         m_ImGuiContext.OnInit();
         m_ImGuiContext.InitWin32OpenGL(window.get());
 
@@ -65,12 +67,13 @@ namespace cyc {
         }
 
         WindowProperties p = window->GetProperty();
-        renderer->SetViewport((float)p.x, (float)p.y, (float)p.width, (float)p.height);
+        gfx->SetViewport((float)p.x, (float)p.y, (float)p.width, (float)p.height);
     }
 
     void Application::OnCoreDestroy()
     {
         renderer->OnDestroy();
+        gfx->OnDestroy();
         m_ImGuiContext.OnDestroy();
 
         //////////////////////testt/////////////////////////
@@ -91,7 +94,7 @@ namespace cyc {
     {
         OnInit();
         LayerStack& ls = window->GetLayerStack();
-        ls.OnAttach(renderer.get());
+        ls.OnAttach(renderer.get(), gfx.get());
     }
 
     void Application::OnClientUpdate()
@@ -112,7 +115,7 @@ namespace cyc {
         //////////////////////testt/////////////////////////
 
         if (window->GetWindowCount())
-            renderer->SwapBuffers();
+            gfx->SwapBuffers();
     }
 
     void Application::OnClientDestroy()
@@ -129,12 +132,12 @@ namespace cyc {
 
         while (m_Running)
         {
-            cyc::RunMessagePump();
+            RunMessagePump();
             m_Timer.Reset();
             OnCoreUpdate();
             OnClientUpdate();
             m_ElapsedTime = GetElapsedTime();
-            m_Running = window->GetWindowCount(); //m_Running could be used to close window but keep application open
+            m_Running &= window->GetWindowCount(); //m_Running could be used to close window but keep application open
         }
 
         OnClientDestroy();
@@ -143,7 +146,32 @@ namespace cyc {
 
     int Application::GetFPS() const
     {
-        return 1.0f / m_ElapsedTime;
+        return 1 / m_ElapsedTime;
+    }
+
+    int Application::GetAverageFPS(int nFrames)
+    {
+        CYC_CORE_ASSERT(nFrames > 1, 
+            "[Application::GetAverageFPS] This function provides an average FPS between "
+            "the given number of frames, so the argument must be greater than 1. Maybe use GetFPS(void) instead?");
+
+        if (m_ElapsedTimePerFrame.size() < nFrames)
+        {
+            m_ElapsedTimePerFrame.push_back(m_ElapsedTime);
+        }
+        else
+        {
+            m_ElapsedTimePerFrame.push_back(m_ElapsedTime);
+            m_ElapsedTimePerFrame.pop_front();
+        }
+
+        float totalElapsedTime = 0;
+        for (float elapsedTime : m_ElapsedTimePerFrame)
+        {
+            totalElapsedTime += elapsedTime;
+        }
+
+        return m_ElapsedTimePerFrame.size() / totalElapsedTime;
     }
 
     float Application::GetElapsedTime() const

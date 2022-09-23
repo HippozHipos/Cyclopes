@@ -9,6 +9,4 @@ namespace cyc {
 	{
 		return std::make_unique<OpenGLContext>();
 	}
-
-
 }

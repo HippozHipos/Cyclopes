@@ -13,9 +13,10 @@ namespace cyc {
 	{
 	}
 
-	void LayerStack::OnAttach(Renderer* renderer)
+	void LayerStack::OnAttach(Renderer* renderer, GraphicsContext* gfx)
 	{
 		this->renderer = renderer;
+		this->gfx = gfx;
 		for (auto& it = m_Layers.rbegin(); it != m_Layers.rend(); ++it)
 		{
 			(*it)->OnAttach();
@@ -62,6 +63,7 @@ namespace cyc {
 	{
 		layer->SetWindow(m_Window);
 		layer->SetRenderer(renderer);
+		layer->SetGfx(gfx);
 		if (!overlay)
 		{
 			CYC_CORE_ASSERT(index <= m_NNonOverlays,
@@ -86,6 +88,7 @@ namespace cyc {
 	{
 		layer->SetWindow(m_Window);
 		layer->SetRenderer(renderer);
+		layer->SetGfx(gfx);
 		if (!overlay)
 		{
 			m_Layers.emplace(m_Layers.begin(), layer);
@@ -102,6 +105,7 @@ namespace cyc {
 	{
 		layer->SetWindow(m_Window);
 		layer->SetRenderer(renderer);
+		layer->SetGfx(gfx);
 		if (!overlay)
 		{
 			m_Layers.emplace(m_Layers.end() - m_NOverlays, layer);

@@ -6,6 +6,7 @@
 #include "Cyclopes/Core/Window.h"
 
 #include "Cyclopes/ImGui/ImGuiContext.h"
+#include "Cyclopes/Renderer/GraphicsContext.h"
 
 #include "Timer.h"
 
@@ -53,11 +54,13 @@ namespace cyc {
 		void Run();
 		
 	protected:
+		Cyc_Scoped<GraphicsContext> gfx;
 		Cyc_Scoped<Renderer> renderer;
 		Cyc_Scoped<Window> window;
 
 	protected:
 		int GetFPS() const;
+		int GetAverageFPS(int frames);
 
 	private:
 		float GetElapsedTime() const;
@@ -70,6 +73,8 @@ namespace cyc {
 		unsigned int VAO; ///test
 
 		float m_ElapsedTime = 0;
+		Cyc_Deque<float> m_ElapsedTimePerFrame;
+
 	};
 
 	Application* CreateApplication();
