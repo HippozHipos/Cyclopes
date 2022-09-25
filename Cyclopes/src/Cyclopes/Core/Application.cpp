@@ -42,11 +42,11 @@ namespace cyc {
 
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
-
+        
         glBindVertexArray(VAO);
         
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
+        
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
@@ -99,8 +99,9 @@ namespace cyc {
 
     void Application::OnClientUpdate()
     {
-        OnUpdate(m_ElapsedTime);
         LayerStack& ls = window->GetLayerStack();
+
+        OnUpdate(m_ElapsedTime);
         ls.OnUpdate(m_ElapsedTime);
 
         m_ImGuiContext.OnBeginRender();
@@ -109,9 +110,7 @@ namespace cyc {
         m_ImGuiContext.OnEndRender();
 
         //////////////////////testt/////////////////////////
-
         glDrawArrays(GL_TRIANGLES, 0, 3);
-
         //////////////////////testt/////////////////////////
 
         if (window->GetWindowCount())

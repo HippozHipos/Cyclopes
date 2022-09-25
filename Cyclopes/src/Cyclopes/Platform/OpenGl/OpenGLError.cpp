@@ -15,8 +15,13 @@ namespace cyc {
     {
         if (type == GL_DEBUG_TYPE_ERROR)
         {
-            CYC_CORE_ERROR("OpenGL Error\nType: {0}\nSeverity: {1}\nMessage: {2}", 
-                type, severity, message);
+            CYC_CORE_ERROR("OpenGL Error\nFunction: {0}\nType: {1}\nSeverity: {2}\nMessage: {3}\n", 
+                (const char*)userParam, type, severity, message);
         }
+    }
+
+    void SetOpenGlErrorMsgCallback(const char* function)
+    {
+        glDebugMessageCallback(OpenGLErrorMessageCallback, (const char*)function);
     }
 }

@@ -79,7 +79,6 @@ namespace cyc {
 
 #if defined(CYC_DEBUG) || defined(CYC_RELEASE)
 		glEnable(GL_DEBUG_OUTPUT);
-		glDebugMessageCallback(OpenGLErrorMessageCallback, 0);
 #endif
 	}
 
@@ -109,6 +108,7 @@ namespace cyc {
 
 	void OpenGLContext::MakeCurrent()
 	{
+		CYC_OPENGL_ERROR_CALLBACK("[OpenGLContext::MakeCurrent]");
 		BOOL res = wglMakeCurrent(m_Dc, m_GLRenderContext);
 		CYC_WIN32_LASTERROR(res,
 			"wglMakeCurrent() failed. Could not set gl render context to current");
@@ -134,6 +134,7 @@ namespace cyc {
 
 	void OpenGLContext::SetViewport(float x, float y, float width, float height)
 	{
+		CYC_OPENGL_ERROR_CALLBACK("[OpenGLContext::SetViewport]");
 		glViewport((int)x, (int)y, (int)width, (int)height);
 	}
 
