@@ -1,7 +1,6 @@
 #include <Cycpch.h>
 
 #include "Application.h"
-#include "Window.h"
 
 #include <imgui.h>
 #include <Cyclopes/ImGui/imgui_impl_opengl3.h>
@@ -34,22 +33,34 @@ namespace cyc {
 
         //////////////////////testt/////////////////////////
 
-        float vertices[] = {
-            -0.5f, -0.5f, 0.0f,
-             0.5f, -0.5f, 0.0f,
-             0.0f,  0.5f, 0.0f
+        unsigned int indices[] = {  // note that we start from 0!
+            0, 1, 2,   // first triangle
+            1, 2, 2    // second triangle
         };
 
+        openglVb.SetVertices(
+            {
+                0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+               -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+                0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
+            }
+        );
+
         glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
+        openglVb.Init();
+        glGenBuffers(1, &EBO);
         
         glBindVertexArray(VAO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        openglVb.Bind();
         
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+        openglVb.BufferData();
+        openglVb.AddLayout(0, 3, false, 6 * sizeof(float), 0);
+        openglVb.AddLayout(1, 3, false, 6 * sizeof(float), 3 * sizeof(float));
+
+        openglVb.DestroyVertexBuffer();
+        openglVb.DestroyVertexLayout();
 
         //////////////////////testt/////////////////////////
     }
@@ -57,17 +68,17 @@ namespace cyc {
     void Application::OnCoreUpdate()
     {
         window->UpdateProperty();
+        WindowProperties& p = window->GetProperty();
         while (window->HasEvent())
         {
             cyc::WindowEvent we = window->ReadEvent();
-            if (we.GetType() == cyc::EventType::W_CLOSE)
+            switch ((int)we.GetType())
             {
-                window->Destroy();
+                case((int)cyc::EventType::W_CLOSE): window->Destroy(); break;
+                case((int)cyc::EventType::W_RESIZED): gfx->SetViewport((float)p.x, (float)p.y, (float)p.width, (float)p.height); break;
             }
         }
 
-        WindowProperties p = window->GetProperty();
-        gfx->SetViewport((float)p.x, (float)p.y, (float)p.width, (float)p.height);
     }
 
     void Application::OnCoreDestroy()
@@ -79,7 +90,7 @@ namespace cyc {
         //////////////////////testt/////////////////////////
 
         glDeleteBuffers(1, &VBO);
-        glDeleteBuffers(1, &VAO);
+        openglVb.Destroy();
 
         //////////////////////testt/////////////////////////
 
@@ -110,7 +121,7 @@ namespace cyc {
         m_ImGuiContext.OnEndRender();
 
         //////////////////////testt/////////////////////////
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         //////////////////////testt/////////////////////////
 
         if (window->GetWindowCount())

@@ -2,15 +2,16 @@
 
 #include <string>
 #include <glad/glad.h>
+#include "Cyclopes/Renderer/ShaderContext.h"
 
 namespace cyc {
 
-	class OpenGLShader
+	class OpenGLShader : public ShaderContext
 	{
 	public:
-		void Init(const char* vertexSource, const char* fragmentSource);
-		void Use();
-		void Delete();
+		void OnInit(const char* vertexSource, const char* fragmentSource) override;
+		void Use() override;
+		void OnDestroy() override;
 
 	private:
 		uint32_t MakeVertexShader(const char* source);
