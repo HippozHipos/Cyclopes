@@ -25,12 +25,12 @@ namespace cyc {
 		{
 			m_VertexBuffer = Cyc_MakeScoped<Cyc_Vector<Type>>();
 			m_VertexLayout = Cyc_MakeScoped<Cyc_Vector<VertexLayout>>();
-			glGenBuffers(1, &m_GlBufferId);
 		}
 
 	public:
 		void Init()
 		{
+			glGenBuffers(1, &m_GlBufferId);
 		}
 
 		void SetVertices(const std::vector<Type>& vertices)
