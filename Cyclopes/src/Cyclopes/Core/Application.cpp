@@ -66,12 +66,12 @@ namespace cyc {
         openglIb.DestroyIndexBuffer();
 
         glUseProgram(0);
-        //glBindBuffer(GL_VERTEX_ARRAY, 0);
-        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_VERTEX_ARRAY, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-
-        /*openglIb.Bind();
-        openglVb.Bind();*/
+        openglVa.Bind(); //TODO: shouldn't just doing this work without binding openglIb and openglVb? investigate
+        openglIb.Bind();
+        openglVb.Bind();
 
         //////////////////////testt/////////////////////////
     }
