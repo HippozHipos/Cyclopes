@@ -33,34 +33,45 @@ namespace cyc {
 
         //////////////////////testt/////////////////////////
 
-        unsigned int indices[] = {  // note that we start from 0!
-            0, 1, 2,   // first triangle
-            1, 2, 2    // second triangle
-        };
+        openglIb.SetIndices(
+            {  
+                0, 1, 2,   // first triangle
+                1, 2, 2    // second triangle
+            }
+        );
 
         openglVb.SetVertices(
             {
                 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-               -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+                -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
                 0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
             }
         );
 
-        glGenVertexArrays(1, &VAO);
         openglVb.Init();
-        glGenBuffers(1, &EBO);
+        openglIb.Init();
+        openglVa.Init();
         
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        openglVa.Bind();
+        openglIb.Bind();
         openglVb.Bind();
         
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+        openglIb.BufferData();
         openglVb.BufferData();
         openglVb.AddLayout(0, 3, false, 6 * sizeof(float), 0);
         openglVb.AddLayout(1, 3, false, 6 * sizeof(float), 3 * sizeof(float));
 
         openglVb.DestroyVertexBuffer();
         openglVb.DestroyVertexLayout();
+        openglIb.DestroyIndexBuffer();
+
+        glUseProgram(0);
+        //glBindBuffer(GL_VERTEX_ARRAY, 0);
+        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+
+        /*openglIb.Bind();
+        openglVb.Bind();*/
 
         //////////////////////testt/////////////////////////
     }
@@ -89,8 +100,9 @@ namespace cyc {
 
         //////////////////////testt/////////////////////////
 
-        glDeleteBuffers(1, &VBO);
         openglVb.Destroy();
+        openglIb.Destroy();
+        openglVa.Destroy();
 
         //////////////////////testt/////////////////////////
 

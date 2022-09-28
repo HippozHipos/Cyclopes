@@ -8,6 +8,8 @@
 #include "Cyclopes/ImGui/ImGuiContext.h"
 #include "Cyclopes/Renderer/GraphicsContext.h"
 #include "Cyclopes/Platform/OpenGl/OpenGLVertexBuffer.h"
+#include "Cyclopes/Platform/OpenGl/OpenGLIndexBuffer.h"
+#include "Cyclopes/Platform/OpenGl/OpenGLVertexArray.h"
 
 #include "Timer.h"
 
@@ -70,13 +72,12 @@ namespace cyc {
 		ImGuiContext m_ImGuiContext;
 		Timer m_Timer;
 		bool m_Running = false;
-		unsigned int VBO; ///test
-		unsigned int VAO; ///test
-		unsigned int EBO;
 
 		float m_ElapsedTime = 0;
 		Cyc_Deque<float> m_ElapsedTimePerFrame;
 		OpenGLVertexBuffer<float> openglVb{};
+		OpenGLIndexBuffer openglIb{};
+		OpenGLVertexArray openglVa{};
 	};
 
 	Application* CreateApplication();

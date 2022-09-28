@@ -7,6 +7,7 @@
 
 namespace cyc {
 
+	//TODO: MAYBE CHANGE NAME TO BE OPEGL SPECIFIC OR ADD THE STRUCT INSIDE OpenGLVertexBuffer
 	struct VertexLayout
 	{
 		VertexLayout(int index, int size, bool norm, int stride, int offset);
@@ -16,6 +17,9 @@ namespace cyc {
 		int stride{};
 		int offset{};
 	};
+
+	//TODO: THINK IS STORING VERTEX LAYOUT NEEDED?
+	//TODO: ADD THE ABILITY TO ENABLE, DISABLE VERTEX ATTRIBUTES
 
 	template<class Type>
 	class OpenGLVertexBuffer
@@ -33,7 +37,7 @@ namespace cyc {
 			glGenBuffers(1, &m_GlBufferId);
 		}
 
-		void SetVertices(const std::vector<Type>& vertices)
+		void SetVertices(const Cyc_Vector<Type>& vertices)
 		{
 			*m_VertexBuffer = vertices;
 		}
