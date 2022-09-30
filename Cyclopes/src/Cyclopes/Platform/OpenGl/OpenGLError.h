@@ -13,6 +13,7 @@ namespace cyc {
         const void* userParam);
 
     void SetOpenGlErrorMsgCallback(const char* function);
+}
 
 #ifndef CYC_OPENGL_ERROR_CALLBACK
     #if defined(CYC_DEBUG) || defined(CYC_RELEASE)
@@ -21,4 +22,3 @@ namespace cyc {
         #define CYC_OPENGL_ERROR_CALLBACK(fnName)
     #endif
 #endif
-}

@@ -9,7 +9,7 @@
 namespace cyc {
 
 	LayerStack::LayerStack(Window* window) :
-		m_Window(window)
+		window(window)
 	{
 	}
 
@@ -61,7 +61,7 @@ namespace cyc {
 
 	void LayerStack::PushLayer(Layer* layer, int index, bool overlay)
 	{
-		layer->SetWindow(m_Window);
+		layer->SetWindow(window);
 		layer->SetRenderer(renderer);
 		layer->SetGfx(gfx);
 		if (!overlay)
@@ -86,7 +86,7 @@ namespace cyc {
 
 	void LayerStack::PushFrontLayer(Layer* layer, bool overlay)
 	{
-		layer->SetWindow(m_Window);
+		layer->SetWindow(window);
 		layer->SetRenderer(renderer);
 		layer->SetGfx(gfx);
 		if (!overlay)
@@ -103,7 +103,7 @@ namespace cyc {
 
 	void LayerStack::PushBackLayer(Layer* layer, bool overlay)
 	{
-		layer->SetWindow(m_Window);
+		layer->SetWindow(window);
 		layer->SetRenderer(renderer);
 		layer->SetGfx(gfx);
 		if (!overlay)

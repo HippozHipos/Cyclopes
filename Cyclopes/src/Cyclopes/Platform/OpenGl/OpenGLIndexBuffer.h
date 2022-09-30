@@ -14,7 +14,7 @@ namespace cyc {
 		void Init();
 		void Bind();
 		void BufferData(bool staticDraw = true);
-		void DestroyIndexBuffer();
+		void DestroyCPUIndexBuffer();
 		void Destroy();
 
 	private:

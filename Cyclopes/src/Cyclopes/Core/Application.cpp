@@ -56,22 +56,13 @@ namespace cyc {
         openglIb.Bind();
         openglVb.Bind();
         
+        openglVa.AddLayout<float>(0, 3, false, 6 * sizeof(float), 0);
+        openglVa.AddLayout<float>(1, 3, false, 6 * sizeof(float), 3 * sizeof(float));
+
         openglIb.BufferData();
         openglVb.BufferData();
-        openglVb.AddLayout(0, 3, false, 6 * sizeof(float), 0);
-        openglVb.AddLayout(1, 3, false, 6 * sizeof(float), 3 * sizeof(float));
 
-        openglVb.DestroyVertexBuffer();
-        openglVb.DestroyVertexLayout();
-        openglIb.DestroyIndexBuffer();
-
-        glUseProgram(0);
-        glBindBuffer(GL_VERTEX_ARRAY, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-        openglVa.Bind(); //TODO: shouldn't just doing this work without binding openglIb and openglVb? investigate
-        openglIb.Bind();
-        openglVb.Bind();
+        openglVa.Use(); 
 
         //////////////////////testt/////////////////////////
     }
