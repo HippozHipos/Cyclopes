@@ -12,9 +12,9 @@ public:
 	}
 
 public:
-	void OnUpdate(float elapsedTime) override 
+	void OnUpdate() override 
 	{
-		m_ElapsedTime = elapsedTime;
+		m_ElapsedTime = cyc::Time::GetDeltaTime();
 	}
 
 	void OnImGuiRender() override
@@ -70,10 +70,10 @@ public:
 		shader->Use();
 	}
 
-	void OnUpdate(float elapsedTime) override 
+	void OnUpdate() override 
 	{
 		cyc::RenderCommand::Clear(0.12, 0.12, 0.125, 0);
-		layer.fps = GetAverageFPS(50);
+		layer.fps = cyc::Time::GetAverageFPS();
 	}
 
 	void OnImGuiRender() override

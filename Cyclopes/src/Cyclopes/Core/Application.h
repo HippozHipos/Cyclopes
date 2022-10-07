@@ -12,7 +12,7 @@
 #include "Cyclopes/Platform/OpenGl/OpenGLIndexBuffer.h"
 #include "Cyclopes/Platform/OpenGl/OpenGLVertexArray.h"
 
-#include "Timer.h"
+#include "Time.h"
 
 
 namespace cyc {
@@ -27,7 +27,7 @@ namespace cyc {
 
 	public:
 		virtual void OnInit() = 0;
-		virtual void OnUpdate(float elapsedTime) = 0;
+		virtual void OnUpdate() = 0;
 		virtual void OnDestroy() = 0;
 		virtual void OnImGuiRender();
 
@@ -43,26 +43,17 @@ namespace cyc {
 
 	public:
 		void Run();
-		
+
 	protected:
 		Cyc_Scoped<GraphicsContext> gfx;
 		Cyc_Scoped<Renderer2D> renderer2D;
 		Cyc_Scoped<Window> window;
 
-	protected:
-		int GetFPS() const;
-		int GetAverageFPS(int frames);
-
-	private:
-		float GetElapsedTime() const;
-
 	private:
 		ImGuiContext m_ImGuiContext;
-		Timer m_Timer;
 		bool m_Running = false;
 
 		float m_ElapsedTime = 0;
-		Cyc_Deque<float> m_ElapsedTimePerFrame;
 		OpenGLVertexBuffer<float> openglVb{};
 		OpenGLIndexBuffer openglIb{};
 		OpenGLVertexArray openglVa{};

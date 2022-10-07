@@ -43,8 +43,6 @@ namespace cyc {
         m_ImGuiContext.OnInit();
         m_ImGuiContext.InitWin32OpenGL(window.get());
 
-        m_Timer.Reset();
-
         //////////////////////testt/////////////////////////
 
         openglIb.SetIndices(
@@ -129,8 +127,8 @@ namespace cyc {
     {
         LayerStack& ls = window->GetLayerStack();
 
-        OnUpdate(m_ElapsedTime);
-        ls.OnUpdate(m_ElapsedTime);
+        OnUpdate();
+        ls.OnUpdate();
 
         m_ImGuiContext.OnBeginRender();
         OnImGuiRender();
@@ -160,51 +158,14 @@ namespace cyc {
         while (m_Running)
         {
             RunMessagePump();
-            m_Timer.Reset();
+            Time::_Reset();
             OnCoreUpdate();
             OnClientUpdate();
-            m_ElapsedTime = GetElapsedTime();
+            Time::_UpdateElapsedTime();
             m_Running = window->GetWindowCount(); //m_Running could be used to close window but keep application open
         }
 
         OnClientDestroy();
         OnCoreDestroy();
     }
-
-    int Application::GetFPS() const
-    {
-        return (int)(1.0f / m_ElapsedTime);
-    }
-
-    int Application::GetAverageFPS(int nFrames)
-    {
-        CYC_CORE_ASSERT(nFrames > 1, 
-            "[Application::GetAverageFPS] This function provides an average FPS between "
-            "the given number of frames, so the argument must be greater than 1. Maybe use GetFPS(void) instead?");
-
-        if (m_ElapsedTimePerFrame.size() < nFrames)
-        {
-            m_ElapsedTimePerFrame.push_back(m_ElapsedTime);
-        }
-        else
-        {
-            m_ElapsedTimePerFrame.push_back(m_ElapsedTime);
-            m_ElapsedTimePerFrame.pop_front();
-        }
-
-        float totalElapsedTime = 0;
-        for (float elapsedTime : m_ElapsedTimePerFrame)
-        {
-            totalElapsedTime += elapsedTime;
-        }
-
-        return (int)(m_ElapsedTimePerFrame.size() / totalElapsedTime);
-    }
-
-    float Application::GetElapsedTime() const
-    {
-        float dt = (float)m_Timer.Count<std::chrono::microseconds>();
-        return dt * 0.001f * 0.001f;    //convert to seconds
-    }
-
 }

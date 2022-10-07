@@ -58,7 +58,7 @@ namespace cyc {
 	private:
 		void OnAttach(Renderer2D* r2d, GraphicsContext* gfx);
 		void OnEvent(Event& e);
-		void OnUpdate(float elapsedTime);
+		void OnUpdate();
 		void OnDetach();
 		void OnImGuiRender();
 

@@ -15,7 +15,7 @@ namespace cyc {
 
 	public:
 		virtual void OnAttach();
-		virtual void OnUpdate(float elapsedTime);
+		virtual void OnUpdate();
 		virtual void OnEvent(Event& e);
 		virtual void OnDetach();
 		virtual void OnImGuiRender();

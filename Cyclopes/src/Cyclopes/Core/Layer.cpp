@@ -9,7 +9,7 @@ namespace cyc {
 	}
 
 	void Layer::OnAttach() {}
-	void Layer::OnUpdate(float elapsedTime) {}
+	void Layer::OnUpdate() {}
 	void Layer::OnEvent(Event& e) { e.propagate = true; }
 	void Layer::OnDetach() {}
 	void Layer::OnImGuiRender() {}
