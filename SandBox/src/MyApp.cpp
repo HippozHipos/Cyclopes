@@ -66,13 +66,13 @@ public:
 	void OnInit() override 
 	{	
 		window->GetLayerStack().PushBackLayer(&layer);
-		shader->OnInit(vertexShaderSource, fragmentShaderSource);
+		shader->Init(vertexShaderSource, fragmentShaderSource);
 		shader->Use();
 	}
 
 	void OnUpdate(float elapsedTime) override 
 	{
-		cyc::RenderCommands::Clear(0.12, 0.12, 0.125, 0);
+		cyc::RenderCommand::Clear(0.12, 0.12, 0.125, 0);
 		layer.fps = GetAverageFPS(50);
 	}
 
