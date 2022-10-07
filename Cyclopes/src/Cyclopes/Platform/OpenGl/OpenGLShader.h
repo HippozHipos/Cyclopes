@@ -9,9 +9,9 @@ namespace cyc {
 	class OpenGLShader : public ShaderContext
 	{
 	public:
-		void OnInit(const char* vertexSource, const char* fragmentSource) override;
+		void Init(const char* vertexSource, const char* fragmentSource) override;
 		void Use() override;
-		void OnDestroy() override;
+		void Destroy() override;
 
 	private:
 		uint32_t MakeVertexShader(const char* source);

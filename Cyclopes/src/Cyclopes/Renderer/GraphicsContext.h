@@ -15,8 +15,8 @@ namespace cyc {
 		static Cyc_Scoped<GraphicsContext> Create();
 
 	public:
-		virtual void OnInit(Window* window) = 0;
-		virtual void OnDestroy() = 0;
+		virtual void Init(Window* window) = 0;
+		virtual void Destroy() = 0;
 		virtual void SwapBuffers() = 0;
 		virtual void MakeCurrent() = 0;
 		virtual void* GetContext() = 0;

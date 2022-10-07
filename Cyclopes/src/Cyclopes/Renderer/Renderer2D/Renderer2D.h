@@ -14,8 +14,8 @@ namespace cyc {
 		Renderer2D();
 
 	public:
-		void OnInit(GraphicsContext* gfx);
-		void OnDestroy();
+		void Init(GraphicsContext* gfx);
+		void Destroy();
 
 	private:
 		GraphicsContext* gfx = nullptr;

@@ -11,7 +11,7 @@
 
 namespace cyc {
 
-	void OpenGLContext::OnInit(Window* window)
+	void OpenGLContext::Init(Window* window)
 	{
 		m_HWnd = (HWND)window->GetNativeWindow();
 
@@ -99,7 +99,7 @@ namespace cyc {
 			"SwapBuffers() failed. Could not swap buffers with the given Device Context");
 	}
 
-	void OpenGLContext::OnDestroy()
+	void OpenGLContext::Destroy()
 	{
 		BOOL res = wglDeleteContext(m_GLRenderContext);
 		CYC_WIN32_LASTERROR(res,

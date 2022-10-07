@@ -38,8 +38,8 @@ namespace cyc {
 
     void Application::OnCoreInit()
     {
-        gfx->OnInit(window.get());
-        renderer2D->OnInit(gfx.get());
+        gfx->Init(window.get());
+        renderer2D->Init(gfx.get());
         m_ImGuiContext.OnInit();
         m_ImGuiContext.InitWin32OpenGL(window.get());
 
@@ -99,8 +99,8 @@ namespace cyc {
 
     void Application::OnCoreDestroy()
     {
-        renderer2D->OnDestroy();
-        gfx->OnDestroy();
+        renderer2D->Destroy();
+        gfx->Destroy();
         m_ImGuiContext.OnDestroy();
 
         //////////////////////testt/////////////////////////

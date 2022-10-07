@@ -9,12 +9,12 @@ namespace cyc {
 	{
 	}
 
-	void Renderer2D::OnInit(GraphicsContext* gfx)
+	void Renderer2D::Init(GraphicsContext* gfx)
 	{
 		this->gfx = gfx;
 	}
 
-	void Renderer2D::OnDestroy()
+	void Renderer2D::Destroy()
 	{
 	}
 }

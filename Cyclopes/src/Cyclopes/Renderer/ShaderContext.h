@@ -8,8 +8,8 @@ namespace cyc {
 	{
 	public:
 		static Cyc_Scoped<ShaderContext> Create();
-		virtual void OnInit(const char* vertexShader, const char* fragmentShader) = 0;
+		virtual void Init(const char* vertexShader, const char* fragmentShader) = 0;
 		virtual void Use() = 0;
-		virtual void OnDestroy() = 0;
+		virtual void Destroy() = 0;
 	};
 }

@@ -15,9 +15,9 @@ namespace cyc {
 		~OpenGLContext() = default;
 
 	public:
-		void OnInit(Window* window) override;
+		void Init(Window* window) override;
 		void SwapBuffers() override;
-		void OnDestroy() override;
+		void Destroy() override;
 		void MakeCurrent() override;
 		void* GetContext() override;
 		void SetSwapInterval(int interval) override;

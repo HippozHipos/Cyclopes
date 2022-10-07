@@ -46,7 +46,7 @@ namespace cyc {
 		glDeleteShader(fs);
 	}
 
-	void OpenGLShader::OnInit(const char* vertexSource, const char* fragmentSource)
+	void OpenGLShader::Init(const char* vertexSource, const char* fragmentSource)
 	{
 		uint32_t vs = MakeVertexShader(vertexSource);
 		uint32_t fs = MakeFragmentShader(fragmentSource);
@@ -63,7 +63,7 @@ namespace cyc {
 		glUseProgram(m_Program);
 	}
 
-	void OpenGLShader::OnDestroy()
+	void OpenGLShader::Destroy()
 	{
 		CYC_OPENGL_ERROR_CALLBACK("[OpenGLShader::Delete]");
 
