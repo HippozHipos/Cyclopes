@@ -13,7 +13,7 @@ namespace cyc {
 	{
 	}
 
-	void LayerStack::OnAttach(Renderer2D* r2d, GraphicsContext* gfx)
+	void LayerStack::_OnAttach(Renderer2D* r2d, GraphicsContext* gfx)
 	{
 		this->renderer2D = r2d;
 		this->gfx = gfx;
@@ -23,7 +23,7 @@ namespace cyc {
 		}
 	}
 
-	void LayerStack::OnEvent(Event& e)
+	void LayerStack::_OnEvent(Event& e)
 	{
 		for (auto& it = m_Layers.rbegin(); it != m_Layers.rend(); ++it)
 		{
@@ -35,7 +35,7 @@ namespace cyc {
 		}
 	}
 
-	void LayerStack::OnUpdate()
+	void LayerStack::_OnUpdate()
 	{
 		for (auto& it = m_Layers.rbegin(); it != m_Layers.rend(); ++it)
 		{
@@ -43,7 +43,7 @@ namespace cyc {
 		}
 	}
 
-	void LayerStack::OnDetach()
+	void LayerStack::_OnDetach()
 	{
 		for (auto& it = m_Layers.rbegin(); it != m_Layers.rend(); ++it)
 		{
@@ -51,7 +51,7 @@ namespace cyc {
 		}
 	}
 
-	void LayerStack::OnImGuiRender()
+	void LayerStack::_OnImGuiRender()
 	{
 		for (auto& it = m_Layers.rbegin(); it != m_Layers.rend(); ++it)
 		{

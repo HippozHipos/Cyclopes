@@ -33,19 +33,9 @@
 
 namespace cyc {
 
-	class Win32NativeWindow;
-	class Application;
 	class Renderer2D;
-
 	class LayerStack
 	{
-		//These classes are friended so that the only public functions of this class are the push... functions.
-
-		//uses OnEvent function
-		friend class Win32NativeWindow;
-
-		//uses OnAttach, OnUpdate, OnImGuiRender, OnDetach functions
-		friend class Application;
 	public:
 		LayerStack(Window* window);
 
@@ -55,12 +45,12 @@ namespace cyc {
 		void PushFrontLayer(Layer* layer, bool overlay = false);
 		void PushBackLayer(Layer* layer, bool overlay = false);
 
-	private:
-		void OnAttach(Renderer2D* r2d, GraphicsContext* gfx);
-		void OnEvent(Event& e);
-		void OnUpdate();
-		void OnDetach();
-		void OnImGuiRender();
+	public:
+		void _OnAttach(Renderer2D* r2d, GraphicsContext* gfx);
+		void _OnEvent(Event& e);
+		void _OnUpdate();
+		void _OnDetach();
+		void _OnImGuiRender();
 
 	private:
 		Cyc_Vector<Layer*> m_Layers;

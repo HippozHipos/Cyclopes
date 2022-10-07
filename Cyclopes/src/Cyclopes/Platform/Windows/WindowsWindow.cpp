@@ -113,7 +113,7 @@ namespace cyc {
 		{
 			case WM_CLOSE:
 			{
-				layers.OnEvent(WindowEvent(EventType::W_CLOSE));
+				layers._OnEvent(WindowEvent(EventType::W_CLOSE));
 				PostQuitMessage(0);
 				OnWindowClose();
 				return 0;
@@ -121,21 +121,21 @@ namespace cyc {
 
 			case WM_MOVE:
 			{
-				layers.OnEvent(WindowEvent(EventType::W_MOVED));
+				layers._OnEvent(WindowEvent(EventType::W_MOVED));
 				OnWindowMove();
 				break;
 			}
 
 			case WM_KILLFOCUS:
 			{
-				layers.OnEvent(WindowEvent(EventType::W_FOCUS_KILLED));
+				layers._OnEvent(WindowEvent(EventType::W_FOCUS_KILLED));
 				m_Keyboard.ClearState();
 				break;
 			}
 
 			case WM_SETFOCUS:
 			{
-				layers.OnEvent(WindowEvent(EventType::W_FOCUSED));
+				layers._OnEvent(WindowEvent(EventType::W_FOCUSED));
 				SetFocus(m_HWnd);
 				OnWindowFocus();
 				break;
@@ -144,7 +144,7 @@ namespace cyc {
 			//UPDATE WINDOWS SIZE STORED IN CLASS SO THAT IT IS ACCURATE WHEN MOUSE EVENTS
 			case WM_SIZE:
 			{
-				layers.OnEvent(WindowEvent(EventType::W_RESIZED));
+				layers._OnEvent(WindowEvent(EventType::W_RESIZED));
 				OnWindowResize();
 				//figure out how to handle window resizing.
 				RECT rect;
@@ -161,38 +161,38 @@ namespace cyc {
 			///////////////////////////////////////////////////////
 			case WM_LBUTTONDOWN:
 			{
-				layers.OnEvent(MouseEvent(EventType::M_LBUTTON_DOWN));
+				layers._OnEvent(MouseEvent(EventType::M_LBUTTON_DOWN));
 				m_Mouse.OnLButtonDown();
 				break;
 			}
 			case WM_RBUTTONDOWN:
 			{
-				layers.OnEvent(MouseEvent(EventType::M_RBUTTON_DOWN));
+				layers._OnEvent(MouseEvent(EventType::M_RBUTTON_DOWN));
 				m_Mouse.OnRButtonDown();
 				break;
 			}
 			case WM_LBUTTONUP:
 			{
-				layers.OnEvent(MouseEvent(EventType::M_LBUTTON_UP));
+				layers._OnEvent(MouseEvent(EventType::M_LBUTTON_UP));
 				m_Mouse.OnLButtonUp();
 				break;
 			}
 			case WM_RBUTTONUP:
 			{
-				layers.OnEvent(MouseEvent(EventType::M_RBUTTON_UP));
+				layers._OnEvent(MouseEvent(EventType::M_RBUTTON_UP));
 				m_Mouse.OnLButtonUp();
 				break;
 			}
 			case WM_MOUSEWHEEL:
 			{
 				//TODO: IMPLEMENT THIS
-				layers.OnEvent(MouseEvent(EventType::M_WHEEL_SCROLL_DOWN));
-				layers.OnEvent(MouseEvent(EventType::M_WHEEL_SCROLL_UP));
+				layers._OnEvent(MouseEvent(EventType::M_WHEEL_SCROLL_DOWN));
+				layers._OnEvent(MouseEvent(EventType::M_WHEEL_SCROLL_UP));
 				break;
 			}
 			case WM_MOUSEMOVE:
 			{
-				layers.OnEvent(MouseEvent(EventType::M_MOVED));
+				layers._OnEvent(MouseEvent(EventType::M_MOVED));
 				POINTS p = MAKEPOINTS(lParam);
 
 				//if the mouse is dragged out of the window while clicking,
@@ -204,7 +204,7 @@ namespace cyc {
 					{
 						//pushes window event to event queue
 						SetCapture(hWnd);
-						layers.OnEvent(MouseEvent(EventType::M_ENTERED_WINDOW));
+						layers._OnEvent(MouseEvent(EventType::M_ENTERED_WINDOW));
 						m_Mouse.OnMouseEnter();
 					}
 				}
@@ -217,7 +217,7 @@ namespace cyc {
 					else
 					{
 						ReleaseCapture();
-						layers.OnEvent(MouseEvent(EventType::M_LEFT_WINDOW));
+						layers._OnEvent(MouseEvent(EventType::M_LEFT_WINDOW));
 						m_Mouse.OnMouseLeave();
 					}
 				}
@@ -232,7 +232,7 @@ namespace cyc {
 			case WM_SYSKEYUP:
 			{
 				m_Keyboard.OnKeyUp((unsigned char)(wParam));
-				layers.OnEvent(KeyEvent(EventType::K_RELEASED));
+				layers._OnEvent(KeyEvent(EventType::K_RELEASED));
 				break;
 			}
 			case WM_KEYDOWN:
@@ -241,7 +241,7 @@ namespace cyc {
 				if (!(lParam & BIT(30)) || m_Keyboard.AutoRepeatIsEnabled())
 				{
 					m_Keyboard.OnKeyDown((unsigned char)(wParam));
-					layers.OnEvent(KeyEvent(EventType::K_RELEASED));
+					layers._OnEvent(KeyEvent(EventType::K_RELEASED));
 				}
 				break;
 			}

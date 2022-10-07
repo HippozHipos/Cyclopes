@@ -120,7 +120,7 @@ namespace cyc {
     {
         OnInit();
         LayerStack& ls = window->GetLayerStack();
-        ls.OnAttach(renderer2D.get(), gfx.get());
+        ls._OnAttach(renderer2D.get(), gfx.get());
     }
 
     void Application::OnClientUpdate()
@@ -128,11 +128,11 @@ namespace cyc {
         LayerStack& ls = window->GetLayerStack();
 
         OnUpdate();
-        ls.OnUpdate();
+        ls._OnUpdate();
 
         m_ImGuiContext.OnBeginRender();
         OnImGuiRender();
-        ls.OnImGuiRender();
+        ls._OnImGuiRender();
         m_ImGuiContext.OnEndRender();
 
         //////////////////////testt/////////////////////////
@@ -147,7 +147,7 @@ namespace cyc {
     {
         OnDestroy();
         LayerStack& ls = window->GetLayerStack();
-        ls.OnDetach();
+        ls._OnDetach();
     }
 
     void Application::Run()
