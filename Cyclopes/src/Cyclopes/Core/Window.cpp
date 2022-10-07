@@ -15,17 +15,4 @@ namespace cyc {
 		return Cyc_MakeScoped<WindowsWindow>(props);
 #endif
 	}
-
-	bool RunMessagePump()
-	{
-#ifdef CYC_PLATFORM_WINDOWS
-		MSG msg;
-		while (PeekMessage(&msg, nullptr, NULL, NULL, PM_REMOVE))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-		return true;
-#endif
-	}
 }

@@ -6,7 +6,7 @@
 namespace cyc {
 
 	class Window;
-	class Renderer;
+	class Renderer2D;
 	class Layer
 	{
 	public:
@@ -23,12 +23,12 @@ namespace cyc {
 		const Cyc_String& GetName() const;
 
 		void SetWindow(Window* win);
-		void SetRenderer(Renderer* renderer);
+		void SetRenderer(Renderer2D* renderer);
 		void Layer::SetGfx(GraphicsContext* gfx);
 
 	protected:
 		Window* window = nullptr;
-		Renderer* renderer = nullptr;
+		Renderer2D* renderer2D = nullptr;
 		GraphicsContext* gfx = nullptr;
 
 	private:

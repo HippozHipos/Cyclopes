@@ -18,6 +18,7 @@ namespace cyc {
 		uint32_t MakeFragmentShader(const char* source);
 		void CompileShaders(uint32_t vs, uint32_t fs);
 		void CreateProgram(uint32_t vs, uint32_t fs);
+		void LinkProgram(uint32_t vs, uint32_t fs);
 
 	private:
 		uint32_t m_Program = 0;

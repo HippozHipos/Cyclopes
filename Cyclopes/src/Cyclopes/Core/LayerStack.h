@@ -8,6 +8,9 @@
 
 #include "Cyclopes/Renderer/GraphicsContext.h"
 
+
+//TODO: ADD THE ABILITY TO REMOVE LAYER. 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //												SUMMARY
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -32,6 +35,7 @@ namespace cyc {
 
 	class Win32NativeWindow;
 	class Application;
+	class Renderer2D;
 
 	class LayerStack
 	{
@@ -52,7 +56,7 @@ namespace cyc {
 		void PushBackLayer(Layer* layer, bool overlay = false);
 
 	private:
-		void OnAttach(Renderer* renderer, GraphicsContext* gfx);
+		void OnAttach(Renderer2D* r2d, GraphicsContext* gfx);
 		void OnEvent(Event& e);
 		void OnUpdate(float elapsedTime);
 		void OnDetach();
@@ -61,7 +65,7 @@ namespace cyc {
 	private:
 		Cyc_Vector<Layer*> m_Layers;
 		Window* window = nullptr;
-		Renderer* renderer = nullptr;
+		Renderer2D* renderer2D = nullptr;
 		GraphicsContext* gfx = nullptr;
 		int m_NOverlays = 0; //number of overlay layers
 		int m_NNonOverlays = 0; //number of non-overlay layers

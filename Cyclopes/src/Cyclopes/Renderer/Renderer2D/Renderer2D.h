@@ -1,16 +1,17 @@
 #pragma once
 
-#include "GraphicsContext.h"
+#include "../GraphicsContext.h"
+#include "../RenderCommand.h"
+
 #include "Cyclopes/Core/Window.h"
 
-#include "RenderCommands.h"
 
 namespace cyc {
 
-	class Renderer
+	class Renderer2D
 	{
 	public:
-		Renderer();
+		Renderer2D();
 
 	public:
 		void OnInit(GraphicsContext* gfx);

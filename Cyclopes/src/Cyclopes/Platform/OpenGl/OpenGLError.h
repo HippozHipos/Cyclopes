@@ -12,12 +12,12 @@ namespace cyc {
         const GLchar* message,
         const void* userParam);
 
-    void SetOpenGlErrorMsgCallback(const char* function);
+    void SetOpenGlErrorMsgCallback(const char* msg);
 }
 
 #ifndef CYC_OPENGL_ERROR_CALLBACK
     #if defined(CYC_DEBUG) || defined(CYC_RELEASE)
-        #define CYC_OPENGL_ERROR_CALLBACK(fnName) SetOpenGlErrorMsgCallback(fnName)
+        #define CYC_OPENGL_ERROR_CALLBACK(msg) SetOpenGlErrorMsgCallback(msg)
     #else
         #define CYC_OPENGL_ERROR_CALLBACK(fnName)
     #endif

@@ -58,7 +58,5 @@ namespace cyc {
 	protected:
 		bool m_VSyncEnabled = false;
 	};
-
-	bool RunMessagePump();
 }
 

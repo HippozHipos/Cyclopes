@@ -7,30 +7,18 @@
 
 #include "Cyclopes/ImGui/ImGuiContext.h"
 #include "Cyclopes/Renderer/GraphicsContext.h"
+#include "Cyclopes/Renderer/Renderer2D/Renderer2D.h"
 #include "Cyclopes/Platform/OpenGl/OpenGLVertexBuffer.h"
 #include "Cyclopes/Platform/OpenGl/OpenGLIndexBuffer.h"
 #include "Cyclopes/Platform/OpenGl/OpenGLVertexArray.h"
 
 #include "Timer.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//												SUMMARY
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//This class with be inherited from by the client application class. This OnInit, OnUpdate and OnDestroy  
-//functions are implemented by the client. These functions are then called in the respective OnCore...
-//and OnClient... Functions. These functions are directly called in the entry point.
-
-//Clients can use RegisterWindow to register window to the application. This is important if the window uses 
-//the layer system. It can be ignored otherwise.
-
-//Application stores pointers to every window registered but does not own them. 
-
-//Client is responsible for providing a definition for CreateApplication().
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 namespace cyc {
 
-	class Renderer;
+	bool RunMessagePump();
+
 	class Application
 	{
 	public:
@@ -58,7 +46,7 @@ namespace cyc {
 		
 	protected:
 		Cyc_Scoped<GraphicsContext> gfx;
-		Cyc_Scoped<Renderer> renderer;
+		Cyc_Scoped<Renderer2D> renderer2D;
 		Cyc_Scoped<Window> window;
 
 	protected:

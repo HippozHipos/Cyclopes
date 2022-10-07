@@ -13,9 +13,9 @@ namespace cyc {
 	{
 	}
 
-	void LayerStack::OnAttach(Renderer* renderer, GraphicsContext* gfx)
+	void LayerStack::OnAttach(Renderer2D* r2d, GraphicsContext* gfx)
 	{
-		this->renderer = renderer;
+		this->renderer2D = r2d;
 		this->gfx = gfx;
 		for (auto& it = m_Layers.rbegin(); it != m_Layers.rend(); ++it)
 		{
@@ -62,7 +62,7 @@ namespace cyc {
 	void LayerStack::PushLayer(Layer* layer, int index, bool overlay)
 	{
 		layer->SetWindow(window);
-		layer->SetRenderer(renderer);
+		layer->SetRenderer(renderer2D);
 		layer->SetGfx(gfx);
 		if (!overlay)
 		{
@@ -87,7 +87,7 @@ namespace cyc {
 	void LayerStack::PushFrontLayer(Layer* layer, bool overlay)
 	{
 		layer->SetWindow(window);
-		layer->SetRenderer(renderer);
+		layer->SetRenderer(renderer2D);
 		layer->SetGfx(gfx);
 		if (!overlay)
 		{
@@ -104,7 +104,7 @@ namespace cyc {
 	void LayerStack::PushBackLayer(Layer* layer, bool overlay)
 	{
 		layer->SetWindow(window);
-		layer->SetRenderer(renderer);
+		layer->SetRenderer(renderer2D);
 		layer->SetGfx(gfx);
 		if (!overlay)
 		{

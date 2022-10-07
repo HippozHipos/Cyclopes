@@ -52,7 +52,7 @@ namespace cyc {
 			AddLayoutHelper<Type>(vl);
 		}
 
-		void DeleteVertexLayout()
+		void DestroyVertexLayout()
 		{
 			m_LayoutBuffer.reset();
 		}

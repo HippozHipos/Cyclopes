@@ -37,8 +37,11 @@ namespace cyc {
 		m_Program = glCreateProgram();
 		glAttachShader(m_Program, vs);
 		glAttachShader(m_Program, fs);
+	}
+	
+	void OpenGLShader::LinkProgram(uint32_t vs, uint32_t fs)
+	{
 		glLinkProgram(m_Program);
-
 		glDeleteShader(vs);
 		glDeleteShader(fs);
 	}
@@ -50,6 +53,7 @@ namespace cyc {
 
 		CompileShaders(vs, fs);
 		CreateProgram(vs, fs);
+		LinkProgram(vs, fs);
 	}
 
 	void OpenGLShader::Use()

@@ -24,9 +24,9 @@ namespace cyc {
 		window = win;
 	}
 
-	void Layer::SetRenderer(Renderer* renderer)
+	void Layer::SetRenderer(Renderer2D* r2d)
 	{
-		this->renderer = renderer;
+		this->renderer2D = r2d;
 	}
 
 	void Layer::SetGfx(GraphicsContext* gfx)

@@ -20,8 +20,8 @@ namespace cyc {
         }
     }
 
-    void SetOpenGlErrorMsgCallback(const char* function)
+    void SetOpenGlErrorMsgCallback(const char* msg)
     {
-        glDebugMessageCallback(OpenGLErrorMessageCallback, (const char*)function);
+        glDebugMessageCallback(OpenGLErrorMessageCallback, (const char*)msg);
     }
 }
