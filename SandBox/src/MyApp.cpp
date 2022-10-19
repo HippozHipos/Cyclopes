@@ -65,6 +65,7 @@ public:
 public:
 	void OnInit() override 
 	{	
+		cyc::RenderCommand::SetRendererAPI();
 		window->GetLayerStack().PushBackLayer(&layer);
 		shader->Init(vertexShaderSource, fragmentShaderSource);
 		shader->Use();
