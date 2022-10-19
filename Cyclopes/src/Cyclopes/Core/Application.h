@@ -7,7 +7,7 @@
 
 #include "Cyclopes/ImGui/ImGuiContext.h"
 #include "Cyclopes/Renderer/GraphicsContext.h"
-#include "Cyclopes/Renderer/Renderer2D/Renderer2D.h"
+#include "Cyclopes/Renderer/Renderer2D.h"
 #include "Cyclopes/Platform/OpenGl/OpenGLVertexBuffer.h"
 #include "Cyclopes/Platform/OpenGl/OpenGLIndexBuffer.h"
 #include "Cyclopes/Platform/OpenGl/OpenGLVertexArray.h"
@@ -54,7 +54,7 @@ namespace cyc {
 		bool m_Running = false;
 
 		float m_ElapsedTime = 0;
-		OpenGLVertexBuffer<float> openglVb{};
+		OpenGLVertexBuffer openglVb{};
 		OpenGLIndexBuffer openglIb{};
 		OpenGLVertexArray openglVa{};
 	};

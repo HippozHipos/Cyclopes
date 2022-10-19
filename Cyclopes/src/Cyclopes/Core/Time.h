@@ -19,8 +19,8 @@ namespace cyc {
 		static void _UpdateElapsedTime() ;
 
 	private:
-		static Timer m_Timer;
-		static float m_ElapsedTime;
-		static Cyc_Deque<float> m_ElapsedTimePerFrame;
+		static Timer s_Timer;
+		static float s_ElapsedTime;
+		static Cyc_Deque<float> s_ElapsedTimePerFrame;
 	};
 }

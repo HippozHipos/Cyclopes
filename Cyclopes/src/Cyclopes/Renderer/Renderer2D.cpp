@@ -17,4 +17,9 @@ namespace cyc {
 	void Renderer2D::Destroy()
 	{
 	}
+
+	void Renderer2D::DrawQuad(glm::vec2 position, glm::vec2 size, glm::vec4 color)
+	{
+		
+	}
 }

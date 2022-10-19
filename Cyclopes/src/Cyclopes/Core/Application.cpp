@@ -45,20 +45,17 @@ namespace cyc {
 
         //////////////////////testt/////////////////////////
 
-        openglIb.SetIndices(
-            {  
+        
+        std::vector<int> indices = {
                 0, 1, 2,   // first triangle
                 1, 2, 2    // second triangle
-            }
-        );
+        };
 
-        openglVb.SetVertices(
-            {
+        std::vector<float> vertices = {
                 0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
                 -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-                0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f    // top 
-            }
-        );
+                0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f    // top 
+        };
 
         openglVb.Init();
         openglIb.Init();
@@ -71,8 +68,8 @@ namespace cyc {
         openglVa.AddLayout<float>(0, 3, false, 6 * sizeof(float), 0);
         openglVa.AddLayout<float>(1, 3, false, 6 * sizeof(float), 3 * sizeof(float));
 
-        openglIb.BufferData();
-        openglVb.BufferData();
+        openglIb.BufferData(indices.data(), indices.size() * sizeof(int));
+        openglVb.BufferData(vertices.data(), vertices.size() * sizeof(float));
 
         openglVa.Use(); 
 

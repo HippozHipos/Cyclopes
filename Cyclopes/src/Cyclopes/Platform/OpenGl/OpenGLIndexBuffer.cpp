@@ -5,16 +5,6 @@
 #include "glad/glad.h"
 
 namespace cyc {
-	OpenGLIndexBuffer::OpenGLIndexBuffer()
-	{
-		m_IndexBuffer = Cyc_MakeScoped<Cyc_Vector<int>>();
-	}
-
-	void OpenGLIndexBuffer::SetIndices(const Cyc_Vector<int>& indices)
-	{
-		*m_IndexBuffer = indices;
-	}
-
 	void OpenGLIndexBuffer::Init()
 	{
 		CYC_OPENGL_ERROR_CALLBACK("[OpenGLIndexBuffer::Init]");
@@ -29,16 +19,11 @@ namespace cyc {
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_GlBufferId);
 	}
 
-	void OpenGLIndexBuffer::BufferData(bool staticDraw)
+	void OpenGLIndexBuffer::BufferData(void* data, long long int size, bool staticDraw)
 	{
 		CYC_OPENGL_ERROR_CALLBACK("[OpenGLIndexBuffer::BufferData]");
 
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * m_IndexBuffer->size(), m_IndexBuffer->data(), staticDraw ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
-	}
-
-	void OpenGLIndexBuffer::DestroyCPUIndexBuffer()
-	{
-		m_IndexBuffer.reset();
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, staticDraw ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
 	}
 
 	void OpenGLIndexBuffer::Destroy()
@@ -46,8 +31,6 @@ namespace cyc {
 		CYC_OPENGL_ERROR_CALLBACK("[OpenGLIndexBuffer::Destroy]");
 
 		glDeleteBuffers(1, &m_GlBufferId);
-		m_IndexBuffer.reset();
-
 	}
 
 	
