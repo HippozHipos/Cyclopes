@@ -58,7 +58,7 @@ namespace cyc {
         };
 
         openglVb.Init();
-        openglIb.Init();
+        openglIb.Init(6);
         openglVa.Init();
         
         openglVa.Bind();
@@ -132,9 +132,7 @@ namespace cyc {
         ls._OnImGuiRender();
         m_ImGuiContext.OnEndRender();
 
-        //////////////////////testt/////////////////////////
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        //////////////////////testt/////////////////////////
+        cyc::RenderCommand::DrawIndexedVertices(&openglIb);
 
         if (window->GetWindowCount())
             gfx->SwapBuffers();

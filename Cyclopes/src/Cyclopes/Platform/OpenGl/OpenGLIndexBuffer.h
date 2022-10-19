@@ -27,13 +27,10 @@ namespace cyc {
 	class OpenGLIndexBuffer : public IndexBuffer
 	{
 	public:
-		void Init();
-		void Bind();
-		void BufferData(void* data, long long int size, bool staticDraw = true);
-		void Destroy();
-
-	private:
-		uint32_t m_GlBufferId = 0;
+		void Init(std::uint32_t count) override;
+		void Bind() const override;
+		void BufferData(void* data, long long size, bool staticDraw = true) const override;
+		void Destroy() override;
 	};
 
 }

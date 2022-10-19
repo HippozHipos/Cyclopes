@@ -71,44 +71,10 @@ namespace cyc {
 	class OpenGLVertexBuffer : public VertexBuffer
 	{
 	public:
-		void Init()
-		{
-			CYC_OPENGL_ERROR_CALLBACK("[OpenGLVertexBuffer::Init]");
-
-			glGenBuffers(1, &m_GlBufferId);
-		}
-
-		template<class Type>
-		void SetVertices(const std::vector<Type>& vertices)
-		{
-			m_VertexBuffer->resize(vertices.size() * sizeof(Type));
-			std::memcpy(m_VertexBuffer->data(), vertices.data(), vertices.size() * sizeof(Type));
-		}
-
-		void BufferData(void* data, long long int size, bool staticDraw = true) const
-		{
-			CYC_OPENGL_ERROR_CALLBACK("[OpenGLVertexBuffer::BufferData]");
-			glBufferData(GL_ARRAY_BUFFER, size, data, staticDraw ? GL_STATIC_DRAW : GL_DYNAMIC_DRAW);
-
-		}
-
-		void Bind() const
-		{
-			CYC_OPENGL_ERROR_CALLBACK("[OpenGLVertexBuffer::Bind]");
-
-			glBindBuffer(GL_ARRAY_BUFFER, m_GlBufferId);
-		}
-
-	public:
-		void Destroy()
-		{
-			CYC_OPENGL_ERROR_CALLBACK("[OpenGLVertexBuffer::Destroy]");
-
-			glDeleteBuffers(1, &m_GlBufferId);
-		}
-
-	private:
-		uint32_t m_GlBufferId = 0;
+		void Init() override;
+		void Bind() const override;
+		void BufferData(void* data, long long int size, bool staticDraw = true) const override;
+		void Destroy() override;
 	};
 
 }
