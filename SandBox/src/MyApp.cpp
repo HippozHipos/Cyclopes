@@ -1,7 +1,5 @@
 #include <Cyclopes.h>
 
-#include "Cyclopes/Platform/OpenGl/OpenGLShader.h"
-
 class MyLayer : public cyc::Layer
 {
 public:
@@ -12,7 +10,7 @@ public:
 	}
 
 public:
-	void OnUpdate() override 
+	void OnUpdate() override
 	{
 		m_ElapsedTime = cyc::Time::GetDeltaTime();
 	}
@@ -33,26 +31,6 @@ private:
 	float m_ElapsedTime = 0;
 };
 
-const char* vertexShaderSource = 
-"#version 330 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"layout (location = 1) in vec3 aColor;\n"
-"out vec3 ourColor;\n"
-"void main()\n"
-"{\n"
-"   gl_Position = vec4(aPos, 1.0);\n"
-"   ourColor = aColor;\n"
-"}\0";
-
-const char* fragmentShaderSource = 
-"#version 330 core\n"
-"out vec4 FragColor;\n"
-"in vec3 ourColor;\n"
-"void main()\n"
-"{\n"
-"   FragColor = vec4(ourColor, 1.0f);\n"
-"}\n\0";
-
 class MyApp : public cyc::Application
 {
 public:
@@ -67,14 +45,69 @@ public:
 	{	
 		cyc::RenderCommand::SetRendererAPI();
 		window->GetLayerStack().PushBackLayer(&layer);
+
+		vertexShaderSource =
+			"#version 330 core\n"
+			"layout (location = 0) in vec3 aPos;\n"
+			"layout (location = 1) in vec3 aColor;\n"
+			"uniform mat4 projectionMat;"
+			"uniform mat4 viewMat;"
+			"out vec3 ourColor;\n"
+			"void main()\n"
+			"{\n"
+			"   gl_Position = projectionMat * viewMat * vec4(aPos, 1.0);\n"
+			"   ourColor = aColor;\n"
+			"}\0";
+
+		fragmentShaderSource =
+			"#version 330 core\n"
+			"out vec4 FragColor;\n"
+			"in vec3 ourColor;\n"
+			"void main()\n"
+			"{\n"
+			"   FragColor = vec4(ourColor, 1.0f);\n"
+			"}\n\0";
+
+		std::vector<int> indices = {
+		0, 1, 2,   // first triangle
+		1, 2, 2    // second triangle
+		};
+
+		std::vector<float> vertices = {
+				0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
+				-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
+				0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f    // top 
+		};
+
+		openglVb.Init();
+		openglIb.Init(6);
+		openglVa.Init();
+
+		openglVa.Bind();
+		openglIb.Bind();
+		openglVb.Bind();
+
+		openglVa.AddLayout<float>(0, 3, false, 6 * sizeof(float), 0);
+		openglVa.AddLayout<float>(1, 3, false, 6 * sizeof(float), 3 * sizeof(float));
+
+		openglIb.BufferData(indices.data(), indices.size() * sizeof(int));
+		openglVb.BufferData(vertices.data(), vertices.size() * sizeof(float));
+
+		openglVa.Use();
+
 		shader->Init(vertexShaderSource, fragmentShaderSource);
 		shader->Use();
+
+		shader->SetMat4f("projectionMat", camera.MakeProjectionMatrix());
+		shader->SetMat4f("viewMat", camera.MakeViewMatrix());
 	}
 
 	void OnUpdate() override 
 	{
-		cyc::RenderCommand::Clear(0.12, 0.12, 0.125, 0);
+		cyc::RenderCommand::Clear(0.12f, 0.12f, 0.125f, 0.0f);
 		layer.fps = cyc::Time::GetAverageFPS();
+
+		cyc::RenderCommand::DrawIndexedVertices(&openglIb);
 	}
 
 	void OnImGuiRender() override
@@ -92,12 +125,25 @@ public:
 
 	void OnDestroy() override 
 	{
+		openglVb.Destroy();
+		openglIb.Destroy();
+		openglVa.Destroy();
 	}
 
 private:
 	MyLayer layer;
 	bool m_VSyncOn = true;
-	std::unique_ptr<cyc::ShaderContext> shader = cyc::ShaderContext::Create();
+
+	const char* vertexShaderSource;
+	const char* fragmentShaderSource;
+
+	cyc::OpenGLVertexBuffer openglVb{};
+	cyc::OpenGLIndexBuffer openglIb{};
+	cyc::OpenGLVertexArray openglVa{};
+
+	std::unique_ptr<cyc::Shader> shader = cyc::Shader::Create();
+
+	cyc::PerspectiveCamera camera;
 };
 
 cyc::Application* cyc::CreateApplication()
