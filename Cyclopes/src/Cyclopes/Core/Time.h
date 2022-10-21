@@ -15,6 +15,7 @@ namespace cyc {
 		static int GetAverageFPS(int nFrames = 100);
 
 	public:
+		//you can look but cannot touch
 		static void _Reset();
 		static void _UpdateElapsedTime() ;
 

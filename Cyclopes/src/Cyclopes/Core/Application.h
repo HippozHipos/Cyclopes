@@ -11,6 +11,8 @@
 #include "Cyclopes/Platform/OpenGl/OpenGLVertexBuffer.h"
 #include "Cyclopes/Platform/OpenGl/OpenGLIndexBuffer.h"
 #include "Cyclopes/Platform/OpenGl/OpenGLVertexArray.h"
+#include "Cyclopes/Platform/OpenGl/OpenGLShader.h"
+#include "Cyclopes/Renderer/Camera.h"
 
 #include "Time.h"
 
@@ -52,11 +54,6 @@ namespace cyc {
 	private:
 		ImGuiContext m_ImGuiContext;
 		bool m_Running = false;
-
-		float m_ElapsedTime = 0;
-		OpenGLVertexBuffer openglVb{};
-		OpenGLIndexBuffer openglIb{};
-		OpenGLVertexArray openglVa{};
 	};
 
 	Application* CreateApplication();

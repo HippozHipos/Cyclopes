@@ -19,7 +19,7 @@ namespace cyc {
 			}
 		}
 
-		CYC_CORE_ASSERT(false, "RendererAPI creation failed");
+		CYC_CORE_ASSERT(false, "RendererAPI creation failed. RendererAPI::Type is not valid.");
 		return nullptr;
 	}
 

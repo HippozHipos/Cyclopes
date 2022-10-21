@@ -11,6 +11,8 @@
 
 #include "Cyclopes/Platform/Windows/WindowsWindow.h"
 
+
+
 namespace cyc {
 
     bool RunMessagePump() 
@@ -42,38 +44,6 @@ namespace cyc {
         renderer2D->Init(gfx.get());
         m_ImGuiContext.OnInit();
         m_ImGuiContext.InitWin32OpenGL(window.get());
-
-        //////////////////////testt/////////////////////////
-
-        
-        std::vector<int> indices = {
-                0, 1, 2,   // first triangle
-                1, 2, 2    // second triangle
-        };
-
-        std::vector<float> vertices = {
-                0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-                -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-                0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f    // top 
-        };
-
-        openglVb.Init();
-        openglIb.Init(6);
-        openglVa.Init();
-        
-        openglVa.Bind();
-        openglIb.Bind();
-        openglVb.Bind();
-        
-        openglVa.AddLayout<float>(0, 3, false, 6 * sizeof(float), 0);
-        openglVa.AddLayout<float>(1, 3, false, 6 * sizeof(float), 3 * sizeof(float));
-
-        openglIb.BufferData(indices.data(), indices.size() * sizeof(int));
-        openglVb.BufferData(vertices.data(), vertices.size() * sizeof(float));
-
-        openglVa.Use(); 
-
-        //////////////////////testt/////////////////////////
     }
 
     void Application::OnCoreUpdate()
@@ -97,15 +67,6 @@ namespace cyc {
         renderer2D->Destroy();
         gfx->Destroy();
         m_ImGuiContext.OnDestroy();
-
-        //////////////////////testt/////////////////////////
-
-        openglVb.Destroy();
-        openglIb.Destroy();
-        openglVa.Destroy();
-
-        //////////////////////testt/////////////////////////
-
     }
 
     void Application::OnImGuiRender()
@@ -131,8 +92,6 @@ namespace cyc {
         OnImGuiRender();
         ls._OnImGuiRender();
         m_ImGuiContext.OnEndRender();
-
-        cyc::RenderCommand::DrawIndexedVertices(&openglIb);
 
         if (window->GetWindowCount())
             gfx->SwapBuffers();

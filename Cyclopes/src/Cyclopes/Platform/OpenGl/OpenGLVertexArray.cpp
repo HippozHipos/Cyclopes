@@ -13,7 +13,7 @@ namespace cyc {
 
 	void OpenGLVertexArray::Use()
 	{
-		CYC_OPENGL_ERROR_CALLBACK("[OpenGLVertexArray::Use]");
+		CYC_OPENGL_ERROR_CALLBACK("[OpenGLVertexArray::Use] glVertexAttribPointer");
 
 		Bind();
 		int i = 0;
@@ -26,6 +26,8 @@ namespace cyc {
 				case (int)LayoutType::DOUBLE: glVertexAttribPointer(vl.index, vl.size, GL_DOUBLE , vl.normalize, vl.stride, (void*)vl.offset); break;
 				case (int)LayoutType::SHORT: glVertexAttribPointer(vl.index, vl.size, GL_SHORT, vl.normalize, vl.stride, (void*)vl.offset); break;
 			}
+
+			CYC_OPENGL_ERROR_CALLBACK("[OpenGLVertexArray::Use] glEnableVertexAttribArray");
 			glEnableVertexAttribArray(i++);
 		}
 	}
@@ -46,11 +48,11 @@ namespace cyc {
 
 	void OpenGLVertexArray::EnableAttribute(int i)
 	{
-		CYC_OPENGL_ERROR_CALLBACK("[OpenGLVertexArray::EnableAttribute]");
 
 		CYC_CORE_ASSERT(i < m_LayoutBuffer->size(), 
 			"Index out of range. Valid Index = 0 to {0}", m_LayoutBuffer->size() - 1);
 
+		CYC_OPENGL_ERROR_CALLBACK("[OpenGLVertexArray::EnableAttribute]");
 		glEnableVertexAttribArray(i);
 	}
 

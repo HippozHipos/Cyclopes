@@ -24,4 +24,25 @@ namespace cyc {
     {
         glDebugMessageCallback(OpenGLErrorMessageCallback, (const char*)msg);
     }
+
+    void CheckShaderCompilationSuccess(std::uint32_t shader)
+    {
+        GLint isCompiled = 0;
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &isCompiled);
+        if (isCompiled == GL_FALSE)
+        {
+            GLint maxLength = 0;
+            glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLength);
+
+            // The maxLength includes the NULL character
+            Cyc_Vector<GLchar> errorLog(maxLength);
+            glGetShaderInfoLog(shader, maxLength, &maxLength, errorLog.data());
+
+            CYC_CORE_ERROR(errorLog.data());
+
+            // Provide the infolog in whatever manor you deem best.
+            // Exit with failure.
+            glDeleteShader(shader); // Don't leak the shader.
+        }
+    }
 }

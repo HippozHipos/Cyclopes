@@ -18,6 +18,7 @@ namespace cyc {
 
 	public:
 		static Cyc_Scoped<RendererAPI> Create(Type type);
+		static Type GetType();
 
 	public:
 		virtual void Clear(float r, float g, float b, float a) const = 0;

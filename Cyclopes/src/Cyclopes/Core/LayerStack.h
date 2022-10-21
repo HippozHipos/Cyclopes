@@ -46,6 +46,7 @@ namespace cyc {
 		void PushBackLayer(Layer* layer, bool overlay = false);
 
 	public:
+		//you can look but cannot touch
 		void _OnAttach(Renderer2D* r2d, GraphicsContext* gfx);
 		void _OnEvent(Event& e);
 		void _OnUpdate();

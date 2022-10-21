@@ -2,11 +2,11 @@
 
 #include <string>
 #include <glad/glad.h>
-#include "Cyclopes/Renderer/ShaderContext.h"
+#include "Cyclopes/Renderer/Shader.h"
 
 namespace cyc {
 
-	class OpenGLShader : public ShaderContext
+	class OpenGLShader : public Shader
 	{
 	public:
 		void Init(const char* vertexSource, const char* fragmentSource) override;
@@ -19,6 +19,9 @@ namespace cyc {
 		void CompileShaders(uint32_t vs, uint32_t fs);
 		void CreateProgram(uint32_t vs, uint32_t fs);
 		void LinkProgram(uint32_t vs, uint32_t fs);
+
+	public:
+		void SetMat4f(const Cyc_String& name, const glm::mat4& value) override;
 
 	private:
 		uint32_t m_Program = 0;

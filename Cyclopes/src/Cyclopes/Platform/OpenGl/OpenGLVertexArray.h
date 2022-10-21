@@ -11,7 +11,7 @@ namespace cyc {
 	class OpenGLVertexArray
 	{
 	private:
-		enum class LayoutType : uint8_t
+		enum class LayoutType : std::uint8_t
 		{
 			INT,
 			FLOAT,
