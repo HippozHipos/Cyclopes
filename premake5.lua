@@ -16,6 +16,7 @@ IncludeDir["GLFW"] = "Cyclopes/vendor/GLFW/include"
 IncludeDir["GLAD"] = "Cyclopes/vendor/GLAD/include"
 IncludeDir["spdlog"] = "Cyclopes/vendor/spdlog/include"
 IncludeDir["ImGui"] = "Cyclopes/vendor/ImGui"
+IncludeDir["glm"] = "Cyclopes/vendor/glm"
 
 include "Cyclopes/vendor/GLFW"
 include "Cyclopes/vendor/GLAD"
@@ -46,6 +47,7 @@ project "Cyclopes"
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.ImGui}", 
 		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.glm}",
 		"%{prj.name}/src"
 	}
 
@@ -102,6 +104,7 @@ project "Sandbox"
 		"%{IncludeDir.GLAD}",
 		"%{IncludeDir.ImGui}", 
 		"Cyclopes/vendor/spdlog/include",
+		"%{IncludeDir.glm}",
 		"Cyclopes/src",
 	}
 
