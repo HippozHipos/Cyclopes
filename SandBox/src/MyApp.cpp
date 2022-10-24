@@ -1,4 +1,7 @@
+#include "Cyclopes.h"
+
 #include <Cyclopes.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 class MyLayer : public cyc::Layer
 {
@@ -35,14 +38,18 @@ class MyApp : public cyc::Application
 {
 public:
 	MyApp() :
-		cyc::Application(800, 500)
+		cyc::Application(1200, 800)
 	{
 		window->SetTitle("Cyclopes Window");
 	}
 
 public:
-	void OnInit() override 
-	{	
+	void OnInit() override
+	{
+		camera.AspectRatio = 1600.0f / 800.0f;
+		camera.MovementSensitivity = 5.0f;
+		camera.SetRotationSensitivity(3.0f);
+
 		cyc::RenderCommand::SetRendererAPI();
 		window->GetLayerStack().PushBackLayer(&layer);
 
@@ -52,6 +59,7 @@ public:
 			"layout (location = 1) in vec3 aColor;\n"
 			"uniform mat4 projectionMat;"
 			"uniform mat4 viewMat;"
+			"uniform mat4 modelMat;"
 			"out vec3 ourColor;\n"
 			"void main()\n"
 			"{\n"
@@ -62,21 +70,23 @@ public:
 		fragmentShaderSource =
 			"#version 330 core\n"
 			"out vec4 FragColor;\n"
-			"in vec3 ourColor;\n"
 			"void main()\n"
 			"{\n"
-			"   FragColor = vec4(ourColor, 1.0f);\n"
+			"   FragColor = vec4(0.5f, 0.6f, 0.3f, 1.0f);\n"
 			"}\n\0";
 
-		std::vector<int> indices = {
-		0, 1, 2,   // first triangle
-		1, 2, 2    // second triangle
-		};
+		shader->Init(vertexShaderSource, fragmentShaderSource);
+		shader->Use();
 
 		std::vector<float> vertices = {
-				0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,   // bottom right
-				-0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,   // bottom left
-				0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f    // top 
+			  0.5f,  0.5f, 0.0f,  // top right
+			 0.5f, -0.5f, 0.0f,  // bottom right
+			-0.5f, -0.5f, 0.0f,  // bottom left
+			-0.5f,  0.5f, 0.0f   // top left 
+		};
+		std::vector<int> indices = {
+			 0, 1, 3,   // first triangle
+			 1, 2, 3    // second triangle
 		};
 
 		openglVb.Init();
@@ -87,27 +97,46 @@ public:
 		openglIb.Bind();
 		openglVb.Bind();
 
-		openglVa.AddLayout<float>(0, 3, false, 6 * sizeof(float), 0);
-		openglVa.AddLayout<float>(1, 3, false, 6 * sizeof(float), 3 * sizeof(float));
+		openglVa.AddLayout<float>(0, 3, false, 3 * sizeof(float), 0);
 
 		openglIb.BufferData(indices.data(), indices.size() * sizeof(int));
 		openglVb.BufferData(vertices.data(), vertices.size() * sizeof(float));
 
 		openglVa.Use();
 
-		shader->Init(vertexShaderSource, fragmentShaderSource);
-		shader->Use();
+		glm::mat4 model = glm::mat4(1);
+		model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
+		shader->SetMat4f("modelMat", model);
 
 		shader->SetMat4f("projectionMat", camera.MakeProjectionMatrix());
-		shader->SetMat4f("viewMat", camera.MakeViewMatrix());
+		gfx->SetSwapInterval(false);
+
+		window->HideCursor(true);
+		window->LockCursor(true);
 	}
 
-	void OnUpdate() override 
+	void OnUpdate() override
 	{
-		cyc::RenderCommand::Clear(0.12f, 0.12f, 0.125f, 0.0f);
 		layer.fps = cyc::Time::GetAverageFPS();
 
+		//cyc::RenderCommand::Clear(0.12f, 0.12f, 0.125f, 0.0f);
 		cyc::RenderCommand::DrawIndexedVertices(&openglIb);
+
+		camera.RotateWithMouse(window->GetMouse());
+		camera.MoveWithKeyboard(window->GetKeyboard());
+		camera.Update();
+
+		auto vm = camera.MakeViewMatrix();
+		shader->SetMat4f("viewMat", camera.MakeViewMatrix());
+
+		if (window->GetKeyboard().HasChar())
+			if (window->GetKeyboard().ReadChar() == 'f')
+			{
+				window->HideCursor(!window->CursorIsHidden());
+				window->LockCursor(!window->CursorIsLocked());
+			}
+
 	}
 
 	void OnImGuiRender() override
@@ -123,7 +152,7 @@ public:
 		ImGui::End();
 	}
 
-	void OnDestroy() override 
+	void OnDestroy() override
 	{
 		openglVb.Destroy();
 		openglIb.Destroy();
@@ -132,7 +161,10 @@ public:
 
 private:
 	MyLayer layer;
-	bool m_VSyncOn = true;
+	bool m_VSyncOn = false;
+
+	float previousX = 0;
+	float previousY = 0;
 
 	const char* vertexShaderSource;
 	const char* fragmentShaderSource;
@@ -148,5 +180,5 @@ private:
 
 cyc::Application* cyc::CreateApplication()
 {
-	return new MyApp{}; 
+	return new MyApp{};
 }
