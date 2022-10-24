@@ -1,3 +1,3 @@
 # Cyclopes
 
-Cyclopes engine
+Graphics Engine
