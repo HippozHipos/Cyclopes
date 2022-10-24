@@ -21,6 +21,7 @@
 #include <array>
 
 #include <bitset>
+#include <cmath>
 
 #include <memory>
 #include <functional>

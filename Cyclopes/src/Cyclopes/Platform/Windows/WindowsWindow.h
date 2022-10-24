@@ -13,13 +13,9 @@
 #include "Cyclopes/Event/Keyboard.h"
 #include "Cyclopes/Event/WindowEvent.h"
 
-//TODO: Window size currently includes non-clint region as well. Fix that.
-
 //TODO: Add support for window resizing
 
 //TODO: Make window focus when any part of a window is click
-
-//TODO: In Win32NativeWindow Update x, y, width and height whenever window is resized or moveed
 
 namespace cyc {
 
@@ -54,11 +50,10 @@ namespace cyc {
 		WindowEvent ReadEvent() const;
 
 	public:
-		int x = 0;
-		int y = 0;
+		int rawx = 0;
+		int rawy = 0;
 		int width = 0;
 		int height = 0;
-
 
 	private:
 		void TrimBuffer();
@@ -86,6 +81,7 @@ namespace cyc {
 	private:
 		Mouse m_Mouse;
 		Keyboard m_Keyboard;
+
 	};
 
 	class WindowsWindow : public Window
@@ -95,12 +91,11 @@ namespace cyc {
 		~WindowsWindow();
 
 	public:
-		void SetVSync(bool enable) override;
-		bool VSyncIsEnabled() const override;
 		void SetTitle(const std::string& title) override;
-		void Destroy() override;
+		void _Destroy() override;
 		bool HasEvent() const override;
 		WindowEvent ReadEvent() const override;
+		WindowEvent ReadEventNoPop() const;
 		bool IsFocused() const override;
 		void Focus() override;
 		WindowProperties GetProperty() const override;
@@ -111,7 +106,12 @@ namespace cyc {
 		LayerStack& GetLayerStack() override;
 
 		void* GetNativeWindow() override;
-		void UpdateProperty() override;
+		void _UpdateProperty() override;
+
+		void HideCursor(bool hide) override;
+		void LockCursor(bool lock) override;
+		bool CursorIsLocked() const override;
+		bool CursorIsHidden() const override;
 
 	public:
 		int GetWindowCount() override;	
@@ -123,6 +123,10 @@ namespace cyc {
 		WindowProperties m_Properties;
 		Cyc_Scoped<Win32NativeWindow> m_Window;
 		LayerStack m_Layers;
+
+	private:
+		bool m_CursorLocked = false;
+		bool m_CursorHidden = false;
 	};
 }
 

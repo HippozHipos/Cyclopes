@@ -35,11 +35,15 @@ namespace cyc {
 		void OnMouseEnter();
 		void OnMouseLeave();
 
+		void OnMouseRawInput(int lastx, int lasty);
+
 		//client facing interface
 	public:
 		bool IsInWindow() const;
 		int GetX() const;
 		int GetY() const;
+		int GetRawChangeX() const;
+		int GetRawChangeY() const;
 		bool LeftButtonClicked() const;
 		bool RightButtonClicked() const;
 		bool LeftButtonHeld() const;
@@ -66,8 +70,12 @@ namespace cyc {
 		bool m_RightButtonClick = false;
 
 	private:
-		int x = 0;
-		int y = 0;
+		int m_X = 0;
+		int m_Y = 0;
+		int m_RawLastChangex = 0;
+		int m_RawLastChangey = 0;
+		mutable int m_RawPrevLastChangex = 0;
+		mutable int m_RawPrevLastChangey = 0;
 	};
 }
 

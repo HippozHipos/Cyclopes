@@ -1,6 +1,8 @@
 #include "Cycpch.h"
 #include "Mouse.h"
 
+#include "Cyclopes/Core/Log.h"
+
 namespace cyc {
 	MouseEvent::MouseEvent(EventType type) :
 		Event(EventCategory::MOUSE, type)
@@ -20,8 +22,8 @@ namespace cyc {
 	void Mouse::OnMouseMove(int x, int y)
 	{
 		m_EventBuffer.push(EventType::M_MOVED);
-		this->x = x;
-		this->y = y;
+		m_X = x;
+		m_Y = y;
 	}
 	void Mouse::OnLButtonDown()
 	{
@@ -81,6 +83,12 @@ namespace cyc {
 		TrimBuffer(m_EventBuffer, s_MaxBufferSize);
 	}
 
+	void Mouse::OnMouseRawInput(int lastx, int lasty)
+	{
+		 m_RawLastChangex = lastx;
+		 m_RawLastChangey = lasty;
+	}
+
 	bool Mouse::IsInWindow() const
 	{
 		return m_InWindow;
@@ -88,12 +96,28 @@ namespace cyc {
 
 	int Mouse::GetX() const
 	{
-		return x;
+		return m_X;
 	}
 
 	int Mouse::GetY() const
 	{
-		return y;
+		return m_Y;
+	}
+	int Mouse::GetRawChangeX() const
+	{
+		if (m_RawLastChangex - m_RawPrevLastChangex == 0)
+			return 0;
+
+		m_RawPrevLastChangex = m_RawLastChangex;
+		return m_RawLastChangex;
+	}
+	int Mouse::GetRawChangeY() const
+	{
+		if (m_RawLastChangey - m_RawPrevLastChangey == 0)
+			return 0;
+
+		m_RawPrevLastChangey = m_RawLastChangey;
+		return m_RawLastChangey;
 	}
 	bool Mouse::LeftButtonClicked() const
 	{

@@ -11,11 +11,9 @@
 
 #include "Cyclopes/Platform/Windows/WindowsWindow.h"
 
-
-
 namespace cyc {
 
-    bool RunMessagePump() 
+    bool RunMessagePump()
     {
 #ifdef CYC_PLATFORM_WINDOWS
         MSG msg;
@@ -33,12 +31,12 @@ namespace cyc {
     {
         m_Running = true;
         cyc::Log::Init();
-        window = Window::Create({100, 100, width, height});
+        window = Window::Create({ 100, 100, width, height });
         gfx = GraphicsContext::Create();
         renderer2D = Cyc_MakeScoped<Renderer2D>();
     }
 
-    void Application::OnCoreInit()
+    void Application::_OnCoreInit()
     {
         gfx->Init(window.get());
         renderer2D->Init(gfx.get());
@@ -46,23 +44,31 @@ namespace cyc {
         m_ImGuiContext.InitWin32OpenGL(window.get());
     }
 
-    void Application::OnCoreUpdate()
+    void Application::_OnCoreUpdate()
     {
-        window->UpdateProperty();
+        window->_UpdateProperty();
+
         WindowProperties& p = window->GetProperty();
+        if (window->CursorIsLocked())
+        {
+            ::SetCursorPos(
+                p.rawx + (int)(p.width * 0.5f), 
+                p.rawy + (int)(p.height * 0.5f)
+            );
+        }
+
         while (window->HasEvent())
         {
             cyc::WindowEvent we = window->ReadEvent();
             switch ((int)we.GetType())
             {
-                case((int)cyc::EventType::W_CLOSE): window->Destroy(); break;
-                case((int)cyc::EventType::W_RESIZED): gfx->SetViewport((float)p.x, (float)p.y, (float)p.width, (float)p.height); break;
+            case((int)cyc::EventType::W_CLOSE): window->_Destroy(); break;
+            case((int)cyc::EventType::W_RESIZED): gfx->SetViewport((float)p.x, (float)p.y, (float)p.width, (float)p.height); break;
             }
         }
-
     }
 
-    void Application::OnCoreDestroy()
+    void Application::_OnCoreDestroy()
     {
         renderer2D->Destroy();
         gfx->Destroy();
@@ -74,30 +80,30 @@ namespace cyc {
 
     }
 
-    void Application::OnClientInit()
+    void Application::_OnClientInit()
     {
         OnInit();
         LayerStack& ls = window->GetLayerStack();
         ls._OnAttach(renderer2D.get(), gfx.get());
     }
 
-    void Application::OnClientUpdate()
+    void Application::_OnClientUpdate()
     {
         LayerStack& ls = window->GetLayerStack();
-
-        OnUpdate();
-        ls._OnUpdate();
 
         m_ImGuiContext.OnBeginRender();
         OnImGuiRender();
         ls._OnImGuiRender();
         m_ImGuiContext.OnEndRender();
 
+        OnUpdate();
+        ls._OnUpdate();
+
         if (window->GetWindowCount())
             gfx->SwapBuffers();
     }
 
-    void Application::OnClientDestroy()
+    void Application::_OnClientDestroy()
     {
         OnDestroy();
         LayerStack& ls = window->GetLayerStack();
@@ -106,20 +112,21 @@ namespace cyc {
 
     void Application::Run()
     {
-        OnCoreInit();
-        OnClientInit();
+        _OnCoreInit();
+        _OnClientInit();
 
         while (m_Running)
         {
             RunMessagePump();
             Time::_Reset();
-            OnCoreUpdate();
-            OnClientUpdate();
+            _OnCoreUpdate();
+            _OnClientUpdate();
             Time::_UpdateElapsedTime();
             m_Running = window->GetWindowCount(); //m_Running could be used to close window but keep application open
         }
 
-        OnClientDestroy();
-        OnCoreDestroy();
+        _OnClientDestroy();
+        _OnCoreDestroy();
     }
 }
+

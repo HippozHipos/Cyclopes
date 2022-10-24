@@ -11,12 +11,50 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 
 namespace cyc {
 
+	namespace {
+
+		bool N_RegisterMouseRawInput()
+		{
+			RAWINPUTDEVICE rid;
+
+			rid.usUsagePage = 0x01;          // HID_USAGE_PAGE_GENERIC
+			rid.usUsage = 0x02;              // HID_USAGE_GENERIC_MOUSE
+			rid.dwFlags = 0;
+			rid.hwndTarget = nullptr;
+
+			if (RegisterRawInputDevices(&rid, 1, sizeof(rid)) == FALSE)
+			{
+				CYC_WIN32_LASTERROR_NOBREAK(false, "[N_RegisterMouseRawInput] RegisterRawInputDevices failed");
+				return false;
+			}
+
+			return true;
+		}
+
+		RAWINPUT* N_GetRawInputData(LPARAM lParam)
+		{
+			UINT dwSize = 0;
+			GetRawInputData((HRAWINPUT)lParam, RID_INPUT, NULL, &dwSize, sizeof(RAWINPUTHEADER));
+			LPBYTE lpb = new BYTE[dwSize];
+			if (lpb == NULL) return nullptr;
+
+			if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, lpb, &dwSize, sizeof(RAWINPUTHEADER)) != dwSize)
+				CYC_CORE_WARN("[N_GetRawInputData] GetRawInputData did not return correct size\n");
+
+			return (RAWINPUT*)lpb;
+		}
+
+	}
+
+
 	HINSTANCE Win32NativeWindow::s_HInstance = nullptr;
 	int Win32NativeWindow::s_WindowCount = 0;
 	bool Win32NativeWindow::s_HInstanceIsSet = false;
 
 	void Win32NativeWindow::Init(const WindowProperties& props)
 	{
+		rawx = props.rawx;
+		rawy = props.rawy;
 		width = props.width;
 		height = props.height;
 
@@ -41,12 +79,18 @@ namespace cyc {
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 		Cyc_WString wTitle = converter.from_bytes(props.title);
 
+		RECT wr;
+		wr.left = 0; wr.top = 0;
+		wr.right = width; wr.bottom = height;
+
+		AdjustWindowRectEx(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU, 0, 0);
+
 		m_HWnd = ::CreateWindowEx(
 			0,
 			m_ClassName.c_str(),
 			wTitle.c_str(),
 			WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU,
-			props.x, props.y, props.width, props.height,
+			props.rawx, props.rawy, wr.right - wr.left, wr.bottom - wr.top,
 			nullptr,
 			nullptr,
 			s_HInstance,
@@ -56,6 +100,8 @@ namespace cyc {
 		CYC_WIN32_LASTERROR_MSGBOX(m_HWnd, this, L"CreateWindowEx function failed. "
 												"Window Handle is NULL");
 
+		N_RegisterMouseRawInput();
+		
 		ShowWindow(m_HWnd, SW_SHOWDEFAULT);
 	}
 
@@ -80,7 +126,6 @@ namespace cyc {
 	{
 		if (msg == WM_NCCREATE)
 		{
-
 			//extract the windows window class
 			CREATESTRUCT* create = reinterpret_cast<CREATESTRUCT*>(lParam);
 			Win32NativeWindow* const win32Win = static_cast<Win32NativeWindow*>(create->lpCreateParams);
@@ -97,7 +142,6 @@ namespace cyc {
 
 	LRESULT WINAPI Win32NativeWindow::HandleMessageThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
-
 		auto win = reinterpret_cast<Win32NativeWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 		return win->HandleMessage(hWnd, msg, wParam, lParam);
 	}
@@ -111,6 +155,17 @@ namespace cyc {
 
 		switch (msg)
 		{
+			case WM_INPUT:
+			{
+				RAWINPUT* raw = N_GetRawInputData(lParam);
+				if (raw->header.dwType == RIM_TYPEMOUSE)
+				{
+					m_Mouse.OnMouseRawInput(raw->data.mouse.lLastX, raw->data.mouse.lLastY);
+				}
+				delete raw;
+				break;
+			}
+
 			case WM_CLOSE:
 			{
 				layers._OnEvent(WindowEvent(EventType::W_CLOSE));
@@ -122,6 +177,12 @@ namespace cyc {
 			case WM_MOVE:
 			{
 				layers._OnEvent(WindowEvent(EventType::W_MOVED));
+				RECT rect;
+				if (GetWindowRect(m_HWnd, &rect))
+				{
+					rawx = rect.left;
+					rawy = rect.top;
+				}
 				OnWindowMove();
 				break;
 			}
@@ -334,26 +395,42 @@ namespace cyc {
 	{
 	}
 
-	void WindowsWindow::UpdateProperty()
+	void WindowsWindow::_UpdateProperty()
 	{
-		m_Properties.x = m_Window->x;
-		m_Properties.y = m_Window->y;
+		m_Properties.rawx = m_Window->rawx;
+		m_Properties.rawy = m_Window->rawy;
 		m_Properties.width = m_Window->width;
 		m_Properties.height = m_Window->height;
+	}
+
+	void WindowsWindow::HideCursor(bool hide)
+	{
+		::ShowCursor(!hide);
+		m_CursorHidden = hide;
+	}
+
+	bool WindowsWindow::CursorIsHidden() const
+	{
+		return m_CursorHidden;
+	}
+
+	void WindowsWindow::LockCursor(bool lock)
+	{
+		m_CursorLocked = lock;
+	}
+
+	bool WindowsWindow::CursorIsLocked() const
+	{
+		return m_CursorLocked;
 	}
 
 	void WindowsWindow::Init()
 	{
 		m_Window = std::make_unique<Win32NativeWindow>(m_Layers);
 		m_Window->Init(m_Properties);
-
-		if (m_VSyncEnabled)
-		{
-			SetVSync(true);
-		}
 	}
 
-	void WindowsWindow::Destroy()
+	void WindowsWindow::_Destroy()
 	{
 		m_Window->Destroy();
 	}
@@ -366,17 +443,6 @@ namespace cyc {
 	WindowEvent WindowsWindow::ReadEvent() const
 	{
 		return m_Window->ReadEvent();
-	}
-
-	void WindowsWindow::SetVSync(bool enable)
-	{
-		//TODO: Actually enable VSync
-		m_VSyncEnabled = true;
-	}
-
-	bool WindowsWindow::VSyncIsEnabled() const
-	{
-		return m_VSyncEnabled;
 	}
 
 	bool WindowsWindow::IsFocused() const
@@ -426,4 +492,5 @@ namespace cyc {
 	{
 		return m_Window->GetHandle();
 	}
+
 }

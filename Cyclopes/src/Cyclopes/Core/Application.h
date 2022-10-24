@@ -35,13 +35,13 @@ namespace cyc {
 
 
 	public:
-		void OnCoreInit();
-		void OnCoreUpdate();
-		void OnCoreDestroy();
+		void _OnCoreInit();
+		void _OnCoreUpdate();
+		void _OnCoreDestroy();
 
-		void OnClientInit();
-		void OnClientUpdate();
-		void OnClientDestroy();
+		void _OnClientInit();
+		void _OnClientUpdate();
+		void _OnClientDestroy();
 
 	public:
 		void Run();

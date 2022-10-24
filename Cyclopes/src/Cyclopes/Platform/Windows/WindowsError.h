@@ -58,8 +58,24 @@ namespace cyc {
 		}																\
 	} 
 
+
+#define CYC_WIN32_LASTERROR_NOBREAK(cond, msg)									\
+	{																			\
+		if (!(cond))															\
+		{																		\
+			CYC_CORE_ERROR(														\
+				CYC_STRINGIFY(Win32 Last Error) "\n\n"							\
+				msg "\n\n" +													\
+				cyc::TranslateWin32ErrorCodeA(GetLastError()) + "\n\n"			\
+				CYC_STRINGIFY([FILE] ) __FILE__ "\n\n"							\
+				CYC_STRINGIFY([LINE] ) + std::to_string(__LINE__)				\
+			);																	\
+		}																		\
+	} 
+
 #else //CYC_DEBUG
 	#define CYC_WIN32_ERRORMSG(cond, win, errorCode, msg)	
 	#define CYC_WIN32_LASTERROR_MSGBOX(cond, win, msg)		
 	#define CYC_WIN32_LASTERROR(cond, msg)		
+	#define CYC_WIN32_LASTERROR_NOBREAK(cond, msg)
 #endif
